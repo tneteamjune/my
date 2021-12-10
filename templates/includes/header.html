@@ -30,7 +30,7 @@
             <li class="nav-item"><a class="nav-link" href="{% url 'common:logout' %}"><b style='color:skyblue'>{{ user.username }}</b>(logout)</a>
             {% else %}
             <li class="nav-item"><a class="nav-link" href="{% url 'common:login' %}">Login</a>
-            <li class="nav-item"><a class="nav-link" href="{% url 'common:signup' %}">Signup</a></li>
+            {% comment %} <li class="nav-item"><a class="nav-link" href="{% url 'common:signup' %}">Signup</a></li> {% endcomment %}
             {% endif %}
         </ul>
         <ul class="nav navbar-nav flex-row justify-content-center flex-nowrap">
