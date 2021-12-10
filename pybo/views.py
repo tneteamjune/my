@@ -5,13 +5,28 @@ from django.http import HttpResponse
 from django.db.models import Q, Count
 from django.core.paginator import Paginator
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from common.models import Profile, PointsEntry, hashUserNo, Point
-from common.forms import PointsForm, PointForm
+
 from .models import Question, Answer, Comment
 from .forms import QuestionForm, AnswerForm, CommentForm
+
+
+# 메인 메뉴
+def index(request):
+    return render(request, 'pybo/index.html')
+
+def tip(request):
+    return render(request, 'pybo/tip.html')
+def plastic(request):
+    return render(request,'pybo/tip/plastic.html')
+def glass(request):
+    return render(request,'pybo/tip/glass.html')
+def balpo(request):
+    return render(request,'pybo/tip/balpo.html')
+def vinyl(request):
+    return render(request,'pybo/tip/vinyl.html')
+
 
 
 # 공지사항 게시판 
@@ -306,305 +321,4 @@ def vote_answer(request, answer_id):
     else:
         answer.voter.add(request.user)
     return redirect('pybo:detail', question_id=answer.question.id)
-
-
-# 메인 메뉴
-def index(request):
-    return render(request, 'pybo/index.html')
-
-def greenpoint(request):
-    return render(request, 'pybo/greenpoint.html')
-
-def tip(request):
-    return render(request, 'pybo/tip.html')
-def plastic(request):
-    return render(request,'pybo/tip/plastic.html')
-def glass(request):
-    return render(request,'pybo/tip/glass.html')
-def balpo(request):
-    return render(request,'pybo/tip/balpo.html')
-def vinyl(request):
-    return render(request,'pybo/tip/vinyl.html')
-
-
-@login_required(login_url='common:login')
-def mypage(request):
-    """
-    mypage 구현
-    """
-    myuser = request.user
-    pic_url = ''
-
-    context = {
-        'id': myuser.username,
-        'email': myuser.email,
-        'picture': pic_url,
-        }
-    return render(request, 'pybo/mypage.html', context=context)
-
-
-# 포인트 리스트
-def points_list(request):
-    toplist = []
-    users = User.objects.all()
-    points = Profile.objects.all().order_by("-greenpoint")
-    for i in range(len(points)):
-        for j in range(len(users)):
-            if points[i].id == users[j].id:
-                toplist.append(users[j])
-    context = {
-        'users' : users,
-        'topusers' : toplist[:10]
-    }
-    return render(request, 'pybo/points_list.html', context)
-
-# def points_list(request):
-#     toplist = []
-#     users = User.objects.all()
-#     points = Profile.objects.all().order_by("-greenpoint")
-#     for i in range(len(points)):
-#         for j in range(len(users)):
-#             if points[i].id == users[j].id:
-#                 toplist.append(users[j])
-#     context = {
-#         'users' : users,
-#         'topusers' : toplist[:10]
-#     }
-#     return render(request, 'pybo/points_list.html', context)
-
-
-
-# 작업중
-
-monthRef = {
-    8 : 'August',
-    9 : 'September',
-    10 : "October",
-    11 : "November",
-    12 : 'December',
-    1 : 'January',
-    2 : 'February',
-    3 : 'March',
-    4 : 'April',
-    5 : 'May',
-    6 : 'June'
-}
-
-def getStatus(v):
-    if v < 10:
-        return ['inactive', 'text-danger']
-    elif v < 20:
-        return ['average', 'text-warning']
-    elif v < 30:
-        return ['good', 'text-info']
-    else:
-        return ['spectacular', 'text-success']
-
-@login_required(login_url='common:login')
-def points_detail(request, id):
-    user = User.objects.get(id=id)
-    totalPoints = 0
-    for users in User.objects.all():
-        totalPoints += users.profile.greenpoint
-    pointArr = Point.objects.filter(owner_id=id).order_by('date')
-
-    point_sum = 0
-    for point in pointArr:
-        point_sum += point.point
-
-    startMonth = pointArr.first().date.month
-    endMonth = pointArr.last().date.month
-    if endMonth <= 6:
-        endMonth += 12
-    lenn = endMonth - startMonth + 1
-    points = [0]*lenn
-    months = [""]*lenn
-    colors = [""]*lenn
-    for i in range(lenn):
-        for x in pointArr:
-            month = x.date.month
-            if (month <= 6):
-                month += 12
-            if (month == startMonth + i):
-                points[i] += x.point
-        month = startMonth + i
-        if (month > 12):
-            month -= 12
-        months[i] = monthRef[month]
-        if points[i] < 10:
-            colors[i] = "rgba(255, 99, 132,"
-        elif points[i] < 20:
-            colors[i] = "rgba(255, 206, 86,"
-        elif points[i] < 30:
-            colors[i] = "rgba(54, 162, 235,"
-        else:
-            colors[i] = "rgba(129, 247, 173,"
-
-    avgPoints = (sum(points)/len(points))
-    recentPoints = points[-1]
-    avgStatus, avgColor = getStatus(avgPoints)[0], getStatus(avgPoints)[1]
-    recentStatus, recentColor = getStatus(recentPoints)[0], getStatus(recentPoints)[1]
-    avgPoints /= 40
-    recentPoints /= 40
-    avgPoints *= 100
-    recentPoints *= 100
-
-    context = {
-        'totalPoints' : totalPoints,
-        'user' : user,
-        'pointArr' : pointArr,
-        'months' : months,
-        'points' : points,
-        'colors' : colors,
-        'avgPoints' : avgPoints,
-        'recentPoints' : recentPoints,
-        'avgStatus' : avgStatus,
-        'recentStatus' : recentStatus,
-        'avgColor' : avgColor,
-        'recentColor' : recentColor
-    }
-    print(context)
-    return render(request, 'pybo/points_detail.html', context)
-
-
-# @login_required(login_url='common:login')
-# def points_detail(request, id):
-#     user = User.objects.get(id=id)
-#     totalPoints = 0
-#     for users in User.objects.all():
-#         totalPoints += users.profile.greenpoint
-#     pointArr = PointsEntry.objects.filter(user=user).order_by('date')
-#     startMonth = pointArr.first().date.month
-#     endMonth = pointArr.last().date.month
-#     if endMonth <= 6:
-#         endMonth += 12
-#     lenn = endMonth - startMonth + 1
-#     points = [0]*lenn
-#     months = [""]*lenn
-#     colors = [""]*lenn
-#     for i in range(lenn):
-#         for x in pointArr:
-#             month = x.date.month
-#             if (month <= 6):
-#                 month += 12
-#             if (month == startMonth + i):
-#                 points[i] += x.points
-#         month = startMonth + i
-#         if (month > 12):
-#             month -= 12
-#         months[i] = monthRef[month]
-#         if points[i] < 10:
-#             colors[i] = "rgba(255, 99, 132,"
-#         elif points[i] < 20:
-#             colors[i] = "rgba(255, 206, 86,"
-#         elif points[i] < 30:
-#             colors[i] = "rgba(54, 162, 235,"
-#         else:
-#             colors[i] = "rgba(129, 247, 173,"
-
-#     avgPoints = (sum(points)/len(points))
-#     recentPoints = points[-1]
-#     avgStatus, avgColor = getStatus(avgPoints)[0], getStatus(avgPoints)[1]
-#     recentStatus, recentColor = getStatus(recentPoints)[0], getStatus(recentPoints)[1]
-#     avgPoints /= 40
-#     recentPoints /= 40
-#     avgPoints *= 100
-#     recentPoints *= 100
-
-#     context = {
-#         'totalPoints' : totalPoints,
-#         'user' : user,
-#         'pointArr' : pointArr,
-#         'months' : months,
-#         'points' : points,
-#         'colors' : colors,
-#         'avgPoints' : avgPoints,
-#         'recentPoints' : recentPoints,
-#         'avgStatus' : avgStatus,
-#         'recentStatus' : recentStatus,
-#         'avgColor' : avgColor,
-#         'recentColor' : recentColor
-#     }
-#     print(context)
-#     return render(request, 'pybo/points_detail.html', context)
-
-
-@login_required(login_url='common:login')
-def points_get(request, instance):
-    if request.method == "POST":
-        obj = PointsEntry.objects.create(user = instance)
-        obj.user = request.user.id
-        obj.points = 10
-        obj.reason = "get 10 points!"
-        obj.save()
-    
-    #     if form.is_valid():
-    #         formInput = form.cleaned_data
-    #         newID = hashUserNo(formInput['username'])
-    #         if User.objects.filter(userNo=newID).exists() == False:
-    #             newID = hashUserNo(formInput['username'])
-    #             newUser = User(userNo=formInput['username'], firstName=(formInput['firstName']).lower(), lastName=(formInput['lastName']).lower(), points=0)
-    #             newUser.save()
-        
-    #     # currentUser = User.objects.filter(userNo=request.user.id).first()
-
-    #     # for object in PointsEntry.objects.filter(user=request.user.id):
-    #     #     if object.reason == pointentry.reason :
-    #     #         # raise ValidationError(_('Points already added.'))
-    #     #         return HttpResponse('Points already added.')
-
-    #         messages.success(request, 'Request submitted succesfully!')
-    #         form.save()
-    #         form = PointsForm()
-    #     # Save the form. Also adds a point entry
-    # context = {
-    #     'form' : form,
-    # }
-    return render(request, 'pybo/points_get.html')
-
-
-def points_entrys(request):
-    form = PointsForm(request.POST or None)
-    query = request.GET.get('meetingKey')
-    if query is not None:
-        form.initial['meetingKey'] = query
-
-    # Only do something if the request is post
-    if request.method == "POST":
-        form = PointsForm(request.POST)
-        # Make sure noone is trying to hack us. Can use cleaned_data after calling is_valid
-        if form.is_valid():
-            # If the meetingkey is not valid then stop the program
-
-            # Get the meetingKey object associated with the meeting key
-            data = MeetingKey.objects.filter(meetingKey=form.cleaned_data['meetingKey'])
-            if data.exists() == False:
-                raise ValidationError(_('Key does not exist.'))
-            # Startblock
-            # We are going to check if a user exists. If it doesn't then we are going to create one
-            formInput = form.cleaned_data
-            newID = hashUserNo(formInput['user_ID'])
-            if User.objects.filter(userNo=newID).exists() == False:
-                newID = hashUserNo(formInput['user_ID'])
-                newUser = User(userNo=formInput['user_ID'], firstName=(formInput['firstName']).lower(), lastName=(formInput['lastName']).lower(), points=0)
-                newUser.save()
-            # EndBlock
-            # After creating the user, we will fetch it based on the inputted ID
-            currentUser = User.objects.filter(userNo=hashUserNo(form.cleaned_data['user_ID'])).first()
-
-            for object in PointsEntry.objects.filter(user=currentUser):
-                if object.meeting == data.first():
-                    # raise ValidationError(_('Points already added.'))
-                    return HttpResponse('Points already added.')
-
-            messages.success(request, 'Request submitted succesfully!')
-            form.save()
-            form = PointsForm()
-            # Save the form. Also adds a point entry
-    context = {
-        'form' : form,
-    }
-    return render(request, 'points/entry.html', context)
-
-
 

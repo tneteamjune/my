@@ -5,12 +5,6 @@ app_name = 'pybo'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('mypage/', views.mypage, name='mypage'),
-
-    path('greenpoint/', views.greenpoint, name='greenpoint'),
-    path('points_list/', views.points_list, name='points_list'),
-    path('greenpoint/<int:id>', views.points_detail, name="points_detail"),
-    path('points_get/', views.points_get, name='points_get'),
 
     path('tip/', views.tip, name='tip'),
     path('tip/plastic/' ,views.plastic, name='plastic'),

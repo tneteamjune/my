@@ -1,0 +1,13 @@
+{% extends 'layouts/default.html' %}
+{% load pybo_filter %}
+{% block content %}
+
+    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" 
+    style="font-size:20px";input type="button" onclick=href="{% url 'common:points_list' %}">초록점수순위</a>
+    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" 
+    style="font-size:20px";input type="button" onclick=href="{% url 'common:points_get' %}">초록점수받기</a>
+    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" 
+    style="font-size:20px";input type="button" onclick=href="{% url 'common:point' %}">초록점수받기2</a>
+    </br>
+    <img src="/static/image/shookshook.jpg" alt = "슉슉" style="width:300px;height:400px;">
+    {% endblock %}

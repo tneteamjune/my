@@ -9,6 +9,12 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('signup/', views.signup, name='signup'),
     path('change/', views.change, name='change'),
+    path('mypage/', views.mypage, name='mypage'),
+
     path('point/', views.point, name='point'),
+    path('greenpoint/', views.greenpoint, name='greenpoint'),
+    path('points_list/', views.points_list, name='points_list'),
+    path('greenpoint/<int:id>', views.points_detail, name="points_detail"),
+    path('points_get/', views.points_get, name='points_get'),
 
 ]

@@ -1,4 +1,6 @@
+{% extends 'layouts/default.html' %}
 {% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -9,7 +11,6 @@
     font-weight: normal;
     font-style: normal;
     }
-
     .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
     .wrap * {padding: 0;margin: 0;}
     .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
@@ -24,64 +25,10 @@
     .info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
     .info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
     .info .link {color: #5085BB;}
-    
         </style>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>휴지통을 찾아서</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
 
-    </head>
-    <body>
-        <div class="d-flex" id="wrapper">
-            <!-- Sidebar-->
-            <div class="border-end bg-white" id="sidebar-wrapper">
-                <div class="sidebar-heading border-bottom bg-light" style="font-size:25px";><b>휴지통을 찾아서</b></div>
-                <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" 
-                    style="font-size:20px";input type="button" onclick=href="{% url 'pybo:notice' %}">공지사항</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" 
-                    style="font-size:20px";input type="button" onclick=href="{% url 'pybo:tip' %}">재활용 팁</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" 
-                    style="font-size:20px";input type="button" onclick=href="{% url 'pybo:greenpoint' %}">초록점수</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" 
-                    style="font-size:20px";input type="button" onclick=href="{% url 'pybo:mypage' %}">mypage</a>
-                </div>
-            </div>
-            <!-- Page content wrapper-->
-            <div id="page-content-wrapper">
-            <!-- Top navigation-->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                <div class="container-fluid">
-                    <button class="btn btn-primary" id="sidebarToggle">메뉴보기</button>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-                            {% if user.is_authenticated %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'common:logout' %}"><b style='color:green'>{{ user.username }}</b>(logout)</a>
-                            {% else %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'common:login' %}">login</a>
-                            {% endif %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'common:signup' %}">signup</a></li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">admin</a>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href='http://34.64.187.150:8000/admin/'>관리자페이지</a>
-                                    <div class="dropdown-divider"></div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-                <!-- Page content-->
-                <div class="container-fluid">
-                 
+    <!-- Page content-->
+    <div class="container-fluid">                 
     <div id="map" style="width:100%%;height:100vh;"></div>
 
     <script src="http://dapi.kakao.com/v2/maps/sdk.js?appkey=231a33db8742d9b1092898af03f0d832"></script>
@@ -91,29 +38,6 @@
                 center: new kakao.maps.LatLng(36.332208, 127.434075), // 지도의 중심좌표 //대전역
                 level: 7, // 지도의 확대 레벨
             }; 
-        {% comment %} if (navigator.geolocation) {
-        
-        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-        navigator.geolocation.getCurrentPosition(function(position) {
-            
-            var lat = position.coords.latitude, // 위도
-                lon = position.coords.longitude; // 경도
-            
-            var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-                message = '<div style="padding:5px;">여기에 계신가요?!</div>'; // 인포윈도우에 표시될 내용입니다
-            
-            // 마커와 인포윈도우를 표시합니다
-            displayMarker(locPosition, message);
-                
-        });
-        
-    } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-        
-        var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
-            message = 'geolocation을 사용할수 없어요..'
-            
-        displayMarker(locPosition, message);
-    } {% endcomment %}
 
     // 지도에 마커와 인포윈도우를 표시하는 함수입니다
     function displayMarker(locPosition, message) {
@@ -4843,3 +4767,4 @@
 
     </body>
 </html>
+{% endblock %}

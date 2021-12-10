@@ -1,0 +1,41 @@
+<nav class="navbar navbar-dark navbar-expand-md bg-dark justify-content-center">
+    <a href="/" class="navbar-brand mr-0">TrashTongTong</a>
+    <button class="navbar-toggler ml-1" type="button" data-toggle="collapse" data-target="#collapsingNavbar2">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse justify-content-between align-items-center w-100" id="collapsingNavbar2">
+        <ul class="navbar-nav mx-auto text-center">
+            <div id="notice">
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'pybo:notice' %}">공지사항</a>
+              </li>
+            </div>
+            <div id="tip">
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'pybo:tip' %}">재활용팁</a>
+              </li>
+            </div>
+            <div id="point">
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'common:greenpoint' %}">초록점수</a>
+              </li>
+            </div>
+            <div id="MyPage">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'common:mypage' %}">MyPage</a>
+                </li>
+              </div>
+
+            {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'common:logout' %}"><b style='color:skyblue'>{{ user.username }}</b>(logout)</a>
+            {% else %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'common:login' %}">Login</a>
+            <li class="nav-item"><a class="nav-link" href="{% url 'common:signup' %}">Signup</a></li>
+            {% endif %}
+        </ul>
+        <ul class="nav navbar-nav flex-row justify-content-center flex-nowrap">
+            <li class="nav-item"><a class="nav-link" href="https://www.instagram.com/trashtongtong"><i class="fa fa-instagram"></i></a> </li>
+            <li class="nav-item"><a class="nav-link" href="mailto:______@gmail.com"><i class="fa fa-envelope"></i></a> </li>
+        </ul>
+    </div>
+</nav>
