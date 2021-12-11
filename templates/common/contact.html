@@ -1,0 +1,81 @@
+{% extends 'layouts/default.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %} {% endblock title%}
+{% block content %}
+  <div class="container without-background public-form" id="flatpage">
+    <div id="value" class="row">
+      <div class="col-md-12">
+        <h2>{% trans "Any Suggestions?" %}</h2>
+
+        <p>{% trans "We would love to hear from you!" %}
+        <p>{% trans "Please check this FAQ first." %}</p>
+
+        {% include 'includes/_faq.html' %}
+
+        <p>
+          {% blocktrans %}
+          <p>여러분의 소중한 의견을 기다리고 있습니다.
+          <p>참여하시고 초록점수도 받아가세요!
+          {% endblocktrans %}
+        </p></p>
+
+
+        <div class="container">
+      <form method="post" class="post-form my-3">
+          {% csrf_token %}
+          <!-- 오류표시 Start -->
+          {% if form.errors %}
+              <div class="alert alert-danger" role="alert">
+              {% for field in form %}
+                  {% if field.errors %}
+                  <strong>{{ field.label }}</strong>
+                  {{ field.errors }}
+                  {% endif %}
+              {% endfor %}
+              </div>
+          {% endif %}
+          <!-- 오류표시 End -->
+          <div class="form-group">
+            <label for="username">사용자ID</label>
+            <input type="text" class="form-control" name="username" id="username"
+                   readonly value="{{ user.username |default_if_none:'먼저 로그인을 해주세요' }}">
+          </div>
+
+                <div class="form-group">
+                  <label for="last_name">연락처</label>
+                  <input type="text" class="form-control" name="last_name" id="last_name"
+                          value="{{ user.last_name.value|default_if_none:'' }}">
+                </div>
+
+                <div class="form-group">
+                  <label for="email">이메일 *</label>
+                  <input type="text" class="form-control" name="email" id="email"
+                        value="{{ form.value|default_if_none:'' }}">
+                  </div>
+
+             <div class="form-group">
+                     <label for="subject">제목 *</label>
+                     <input type="text" class="form-control" name="subject" id="subject"
+                            value="{{ form.subject.value|default_if_none:'' }}">
+                 </div>
+                 <div class="form-group">
+                     <label for="content">상세내용 *</label>
+                     <textarea class="form-control" name="content"
+                               id="content" rows="10">{{ form.content.value|default_if_none:'' }}</textarea>
+                 </div>
+                 {% comment %} <div class="form-group"> {% endcomment %}
+       
+
+                <form method="POST" action="{% url 'common:contact' %}" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <input type="file" name="imgs" multiple>
+                     
+                  <button type="submit" class="btn btn-primary">제출하기</button>
+                 </form>
+                <p>
+                </div>
+              </div>
+            </div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% load i18n %}
+
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#apply"><strong>{% trans "Q: 초록점수는 어떻게 받나요?" %}</strong></a>
+        </div>
+        <div id="apply" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>
+                    {% blocktrans trimmed %}
+                        A: 초록점수 받는법 참고
+                    {% endblocktrans %}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#too_late"><strong>{% trans "Q: 휴지통 위치가 잘못 표시된 것 같아요" %}</strong></a>
+        </div>
+        <div id="too_late" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>
+                {% url 'core:newsletter' as newsletter_url %}
+                    {% blocktrans trimmed %}
+                        A: 지도 위의 <a href="/">지도보기</a> 마커클릭해서 신고
+                    {% endblocktrans %}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#coach_sponsor"><strong>{% trans "Q: 휴지통 추가 설치가 필요해요" %}</strong></a>
+        </div>
+        <div id="coach_sponsor" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>{% trans "A: 아래에 써주시면 반영을 위해서 노력하겠습니다" %}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#tutorial"><strong>{% trans "Q: 좋은 아이디어가 있어요" %}</strong></a>
+        </div>
+        <div id="tutorial" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>
+                    {% blocktrans trimmed %}
+                        A: 어서 빨리 아래로..
+                    {% endblocktrans %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

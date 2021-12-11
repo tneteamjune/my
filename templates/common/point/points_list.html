@@ -4,17 +4,16 @@
 {% block content %}
 <head>
   <script src="{% static 'js/Chart.bundle.min.js' %}"></script>
-
   <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
-
 </head>
-  <div class="container">
-    <div class="input-group mb-3 bg-dark">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="basic-addon1">@</span>
+
+<div class="container my-3">
+  <div class="row">
+      <div class="col-5">
+          <h4>실시간 초록점수 순위</h4>
       </div>
-      <input type="text" onkeyup='searchTable()' class="form-control search" placeholder="Search for names..." aria-label="Username" aria-describedby="basic-addon1">
-    </div>
+  </div>
+
     <div class="row">
       <div class="col">
         <table
@@ -25,8 +24,8 @@
             <tr>
               <th scope="col">순위</th>
               <th scope="col">초록점수</th>
-              <th scope="col">이름(닉네임)</th>
-              <th scope="col">???</th>
+              <th scope="col">사용자 이름</th>
+              <th scope="col">(임시칸)</th>
             </tr>
           </thead>
           <tbody>

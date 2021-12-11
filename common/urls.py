@@ -14,7 +14,8 @@ urlpatterns = [
     path('point/', views.point, name='point'),
     path('greenpoint/', views.greenpoint, name='greenpoint'),
     path('points_list/', views.points_list, name='points_list'),
-    path('greenpoint/<int:id>', views.points_detail, name="points_detail"),
-    path('points_get/', views.points_get, name='points_get'),
+    path('quiz/', views.quiz, name='quiz'),
+
+    path('contact/', views.contact, name='contact'),
 
 ]

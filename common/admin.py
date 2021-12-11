@@ -3,7 +3,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, Photo, Contact
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 
  
@@ -39,4 +39,18 @@ class AUserAdmin(UserAdmin):
 admin.site.unregister(User)
 admin.site.register(User, AUserAdmin)
 admin.site.register(Profile, ProfileAdmin)
+
+
+
+
+# Photo 클래스를 inline으로 나타낸다.
+class PhotoInline(admin.TabularInline):
+    model = Photo
+
+# Post 클래스는 해당하는 Photo 객체를 리스트로 관리하는 한다. 
+class PostAdmin(admin.ModelAdmin):
+    inlines = [PhotoInline, ]
+
+# Register your models here.
+admin.site.register(Contact, PostAdmin)
 

@@ -3,49 +3,44 @@
 <div class="container my-3">
     <div class="row my-3">
         <div class="col-4">
-            <h4>계정생성</h4>
-        </div>
-        <div class="col-8 text-right">
-            <span>또는 <a href="{% url 'common:login' %}">로그인 하세요.</a></span>
+            <h4>나의 정보 변경</h4>
         </div>
     </div>
-    <form method="post" class="post-form" action="{% url 'common:signup' %}">
+    <form method="post" class="post-form" action="{% url 'common:change' %}">
         {% csrf_token %}
         {% include "form_errors.html" %}
         <div class="form-group">
             <label for="username">사용자ID</label>
             <input type="text" class="form-control" name="username" id="username"
-                   value="{{ form.username.value|default_if_none:'' }}">
+                   readonly value="{{ user.username |default_if_none:'user.username' }}">
         </div>
         <div class="form-group">
             <label for="first_name">이름(닉네임)</label>
             <input type="text" class="form-control" name="first_name" id="first_name"
-                    value="{{ form.first_name.value|default_if_none:'' }}">
+                    value="{{ form.first_name.value|default:user.first_name }}">
         </div>
         <div class="form-group">
             <label for="last_name">연락처</label>
             <input type="text" class="form-control" name="last_name" id="last_name"
-                    value="{{ form.last_name.value|default_if_none:'' }}">
+                    value="{{ form.last_name.value|default:user.last_name }}">
         </div>
         <div class="form-group">
             <label for="email">이메일</label>
             <input type="text" class="form-control" name="email" id="email"
-                   value="{{ form.email.value|default_if_none:'' }}">
+                   value="{{ form.email.value|default:user.email }}">
         </div>
         <div class="form-group">
             <label for="password1">비밀번호</label>
             <input type="password" class="form-control" name="password1" id="password1"
-                   value="{{ form.password1.value|default_if_none:'' }}">
-                   <small id="introHelp" class="form-text text-muted">비밀번호는 8글자 이상으로 입력해 주세요.</small>
-                   <small id="introHelp" class="form-text text-muted">너무 일상적이거나 쉬운 단어는 피해주세요.</small>
+                   value="{{ form.password1.value|default_if_none:'user.password1.value' }}">
         </div>
         <div class="form-group">
             <label for="password2">비밀번호 확인</label>
             <input type="password" class="form-control" name="password2" id="password2"
-                   value="{{ form.password2.value|default_if_none:'' }}">
+                   value="{{ form.password2.value|default_if_none:'user.password2.value' }}">
             <small id="introHelp" class="form-text text-muted">비밀번호를 다시 한번 입력해 주세요.</small>
         </div>
-        <button type="submit" class="btn btn-primary">생성하기</button>
+        <button type="submit" class="btn btn-primary">변경하기</button>
     </form>
 </div>
 {% endblock %}

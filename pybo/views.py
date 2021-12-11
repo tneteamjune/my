@@ -7,6 +7,7 @@ from django.core.paginator import Paginator
 from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
 
 from .models import Question, Answer, Comment
 from .forms import QuestionForm, AnswerForm, CommentForm
@@ -62,7 +63,10 @@ def notice(request):
     page_obj = paginator.get_page(page)
 
     context = {'question_list': page_obj, 'page': page, 'kw': kw, 'so': so}  # <------ so 추가
-    return render(request, 'pybo/question_list.html', context)
+    if request.user.is_superuser:
+        return render(request, 'pybo/question_list_admin.html', context)
+    else:
+        return render(request, 'pybo/question_list.html', context)
 
 def detail(request, question_id):
     """
@@ -117,6 +121,7 @@ def answer_modify(request, answer_id):
     context = {'answer': answer, 'form': form}
     return render(request, 'pybo/answer_form.html', context)
 
+
 @login_required(login_url='common:login')
 def answer_delete(request, answer_id):
     """
@@ -128,6 +133,7 @@ def answer_delete(request, answer_id):
     else:
         answer.delete()
     return redirect('pybo:detail', question_id=answer.question.id)
+
 
 @login_required(login_url='common:login')
 def question_create(request):
@@ -141,7 +147,7 @@ def question_create(request):
             question.author = request.user  # 추가한 속성 author 적용
             question.create_date = timezone.now()
             question.save()
-            return redirect('pybo:index')
+            return redirect('pybo:notice')
     else:
         form = QuestionForm()
     context = {'form': form}

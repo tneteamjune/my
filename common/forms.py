@@ -1,8 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Profile, PointsEntry, hashUserNo
-from .models import Point
+from .models import Profile, Point, Contact
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 
@@ -22,55 +21,27 @@ class UserForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('phone', 'greenpoint')
+        fields = ("phone", 'email', 'greenpoint',)
+
+class PointForm(forms.ModelForm):
+    class Meta:
+        model = Point
+        fields = ('reason',)
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = (
+            "user",
+            "email",
+            "content",
+        )
+        # select = forms.CharField(widget=forms.Select(choices=TYPE_CHOICES))
         
-class PointsForm(forms.ModelForm):
-    meetingKey = forms.CharField(
-        label="Meeting Key",
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                'class' :'form-control',
-                'type' : 'password',
-                'id' : 'inputPassword4',
-                'placeholder' : 'Password'
-                }
-            )
-        )
-    user_ID = forms.CharField(
-        label="user ID",
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                "type" : "text",
-                "class" : "form-control",
-                "id" : "InputID",
-                "placeholder" : "0609067234"
-            }
-        )
-    )
 
-    class Meta :
-        model = PointsEntry
-        fields = ('user', 'date', 'points', 'reason')
 
-    def save(self):
-        data = self.cleaned_data
-        newID = hashUserNo(data['user_ID'])
-        print(newID)
-        tMeeting = MeetingKey.objects.filter(meetingKey=data['meetingKey']).first()
-        tUser=User.objects.filter(studentNo=newID).first()
-        print(tUser)
-        newEntry = PointsEntry(user=tUser, points=tMeeting.points, reason=tMeeting.name, meeting=tMeeting)
-        print(newEntry)
-        newEntry.save()
-        meetingEntry = MeetingEntry(student=tUser, meeting=tMeeting)
-        meetingEntry.save()
-
-# class PointsForm(forms.Form):
-
+# class PointsForm(forms.ModelForm):
 #     meetingKey = forms.CharField(
-#         validators=[RegexValidator(regex='^.{64}$', message='Length has to be 64', code='nomatch')],
 #         label="Meeting Key",
 #         required=True,
 #         widget=forms.TextInput(
@@ -82,9 +53,8 @@ class PointsForm(forms.ModelForm):
 #                 }
 #             )
 #         )
-#     student_ID = forms.CharField(
-#         validators=[RegexValidator(regex='^.{10}$', message='Length has to be 10', code='nomatch')],
-#         label="Student ID",
+#     user_ID = forms.CharField(
+#         label="user ID",
 #         required=True,
 #         widget=forms.TextInput(
 #             attrs={
@@ -95,47 +65,22 @@ class PointsForm(forms.ModelForm):
 #             }
 #         )
 #     )
-#     firstName = forms.CharField(
-#         label="Last Name",
-#         required=True,
-#         widget=forms.TextInput(
-#             attrs={
-#                 "type" : "text",
-#                 "class" : "form-control",
-#                 "id" : "firstName",
-#                 "placeholder" : "John"
-#             }
-#         )
-#     )
-#     lastName = forms.CharField(
-#         label="Last Name",
-#         required=True,
-#         widget=forms.TextInput(
-#             attrs={
-#                 "type" : "text",
-#                 "class" : "form-control",
-#                 "id" : "lastName",
-#                 "placeholder" : "Smith"
-#             }
-#         )
-#     )
+
+#     class Meta :
+#         model = PointsEntry
+#         fields = ('user', 'date', 'points', 'reason')
 
 #     def save(self):
 #         data = self.cleaned_data
-#         newID = hashStudentNo(data['student_ID'])
+#         newID = hashUserNo(data['user_ID'])
 #         print(newID)
 #         tMeeting = MeetingKey.objects.filter(meetingKey=data['meetingKey']).first()
-#         tStudent=Student.objects.filter(studentNo=newID).first()
-#         print(tStudent)
-#         newEntry = PointsEntry(student=tStudent, points=tMeeting.points, reason=tMeeting.name, meeting=tMeeting)
+#         tUser=User.objects.filter(studentNo=newID).first()
+#         print(tUser)
+#         newEntry = PointsEntry(user=tUser, points=tMeeting.points, reason=tMeeting.name, meeting=tMeeting)
 #         print(newEntry)
 #         newEntry.save()
-#         meetingEntry = MeetingEntry(student=tStudent, meeting=tMeeting)
+#         meetingEntry = MeetingEntry(student=tUser, meeting=tMeeting)
 #         meetingEntry.save()
 
 
-
-class PointForm(forms.ModelForm):
-    class Meta:
-        model = Point
-        fields = ('event',)

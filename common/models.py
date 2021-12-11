@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.db import transaction
 from django.utils import timezone
 import hashlib
+from django.utils.translation import gettext_lazy as _
 
 def hashKey():
     ck = CurrentKey.objects.first()
@@ -19,34 +20,17 @@ def hashUserNo(string):
 
 now = timezone.now()
 
-class Point(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateTimeField(default=timezone.now)
-    point = models.IntegerField(default=0)
-    reason = models.TextField()
-    event = models.TextField()
-
-@receiver(post_save, sender=User)
-def create_user_points(sender, instance, created, **kwargs):
-    if created:
-        point = Point.objects.create(owner = instance)
-        point.date = timezone.now()
-        point.point = 10
-        point.reason = "welcome point"
-        point.event = "0. signup"
-        point.save()
-
-
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.TextField(max_length=500, blank=True, null=True)
-    location = models.CharField(max_length=30, blank=True, null=True)
-    birth_date = models.DateField(null=True, blank=True)
-    phone = models.CharField('연락처', max_length=30, blank=True, null=True)
+    phone = models.CharField(max_length=30, null=True)
+    email = models.CharField(max_length=100, null=True)
     greenpoint = models.IntegerField('초록점수', blank=True, null=True)
+    coupon = models.IntegerField('쿠폰', default = 0)
+
     def __str__(self):
         return self.user.username
 
+# 유저 생성시 profile.greenpoint 생성
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
@@ -57,6 +41,31 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
+
+class Point(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateTimeField(default=timezone.now)
+    point = models.IntegerField(default=0)
+    reason = models.TextField(default="")
+    event = models.TextField(default="")
+    def __str__(self):
+        return self.owner.username
+
+@receiver(post_save, sender=User)
+def create_user_points(sender, instance, created, **kwargs):
+    if created:
+        point = Point.objects.create(owner=instance)
+        point.date = timezone.now()
+        point.point = 10
+        point.reason = "가입축하포인트"
+        point.event = "0.가입"
+        point.save()
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
+
+
+# 포인트 발생시 proflie.greenpoint에 반영    
 @receiver(post_save, sender=Point)
 def add_points(sender, instance, created, **kwargs):
     if created:
@@ -70,50 +79,98 @@ def add_points(sender, instance, created, **kwargs):
         user.profile.save()
         
 
+class Contact(models.Model):
+    # ADD, IDEA, ERROR, ETC = 'add', 'idea', 'error', 'etc'
+    # CONTACT_TYPE_CHOICES = (
+    #     (ADD, _('휴지통 추가 설치가 필요해요')),
+    #     (IDEA, _('이런 기능이 있었으면 해요')),
+    #     (ERROR, _('사이트에 오류가 있어요')),
+    #     (ETC, _('그 외 문의가 있어요')),
+    # )
+    
+    ADD, IDEA, ERROR, ETC = 'add', 'idea', 'error', 'etc'
+    TYPE_CHOICES = (
+        (ADD, '휴지통 추가 설치가 필요해요'),
+        (IDEA, '이런 기능이 있었으면 해요'),
+        (ERROR, '사이트에 오류가 있어요'),
+        (ETC, '그 외 문의가 있어요')
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    phone = models.CharField(max_length=30, blank=True, null=True)
+    email = models.CharField(max_length=50)
+    subject = models.CharField(max_length=200)
+    content = models.TextField()
+    create_date = models.DateTimeField()
+    modify_date = models.DateTimeField(null=True, blank=True)
+    image = models.ImageField(upload_to='images/',blank=True, null=True)
+    # type = models.CharField(
+    #     verbose_name=_("어떤 제안이 있으신가요?"),
+    #     max_length=20,
+    #     choices=CONTACT_TYPE_CHOICES,
+    #     default=ADD
+    # )
+    type = models.CharField(
+        choices=TYPE_CHOICES,
+        max_length=100, null=True, blank=True)
+
+    class Meta:
+        ordering = ('-create_date',)
+
+    def __str__(self):
+        return self.subject
+
+
+class Photo(models.Model):
+    contact = models.ForeignKey(Contact, on_delete=models.CASCADE, null=True)
+    image = models.ImageField(upload_to='images/', blank=True, null=True)
+
+
+
 #작업중
 
-class PointsEntry(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateTimeField(default=timezone.now)
-    points = models.IntegerField(null=True)
-    reason = models.TextField(null=True)
+# class PointsEntry(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     date = models.DateTimeField(default=timezone.now)
+#     points = models.IntegerField(null=True)
+#     reason = models.TextField(null=True)
 
-    def __str__(self):
-        return str(self.date) + "-" + str(self.user)
+#     def __str__(self):
+#         return str(self.date) + "-" + str(self.user)
 
-    # def save(self, *args, **kwargs):
-    #     super().save(*args, **kwargs)
-    #     relatedEntries = PointsEntry.objects.filter(user=self.user)
-    #     self.user.profile.greenpoint = sum([entry.points for entry in relatedEntries])
-    #     self.user.save()
+#     def save(self, *args, **kwargs):
+#         super().save(*args, **kwargs)
+#         relatedEntries = PointsEntry.objects.filter(user=self.user)
+#         self.user.profile.greenpoint = sum([entry.points for entry in relatedEntries])
+#         self.user.save()
 
-@receiver(post_save, sender=User)
-def create_user_points(sender, instance, created, **kwargs):
-    if created:
-        obj = PointsEntry.objects.create(user = instance)
-        obj.points = 10
-        obj.reason = "welcome point"
-        obj.save()
+# @receiver(post_save, sender=User)
+# def create_user_points(sender, instance, created, **kwargs):
+#     if created:
+#         obj = PointsEntry.objects.create(user = instance)
+#         obj.points = 10
+#         obj.reason = "welcome point"
+#         obj.save()
 
-class MeetingKey(models.Model):
-    meetingKey = models.CharField(max_length=64, default=hashKey)
-    name = models.TextField()
-    date = models.DateTimeField(auto_now_add=True)
-    points = models.IntegerField(default=0)
-    desc = models.TextField()
+# class MeetingKey(models.Model):
+#     meetingKey = models.CharField(max_length=64, default=hashKey)
+#     name = models.TextField()
+#     date = models.DateTimeField(auto_now_add=True)
+#     points = models.IntegerField(default=0)
+#     desc = models.TextField()
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+#     def save(self, *args, **kwargs):
+#         super().save(*args, **kwargs)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
-    def get_absolute_url(self):
-        return reverse('meetingList', kwargs={'pk' : self.id})
+#     def get_absolute_url(self):
+#         return reverse('meetingList', kwargs={'pk' : self.id})
 
-class MeetingEntry(models.Model):
-    student = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    meeting = models.ForeignKey(MeetingKey, on_delete=models.CASCADE, null=True)
+# class MeetingEntry(models.Model):
+#     student = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+#     meeting = models.ForeignKey(MeetingKey, on_delete=models.CASCADE, null=True)
 
 
 

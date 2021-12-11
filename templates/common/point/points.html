@@ -6,17 +6,19 @@
             <h4>초록점수받기(test)</h4>
         </div>
     </div>
+    환경사랑을 약속하고 초록점수를 받아가세요.
     <form method="post" class="post-form" action="{% url 'common:point' %}">
         {% csrf_token %}
         {% include "form_errors.html" %}
         <div class="form-group">
-            <label for="user">사용자ID</label>
+            <label for="user">...</label>
             <input type="text" class="form-control" name="user" id="user"
-                   readonly value="{{ user.username |default_if_none:'user.username' }}">
+                   readonly value="{{ user.first_name |default_if_none:'user.first_name' }}">
         </div>
-        <input type="text" class="form-control" name="event" id="event"
-        readonly value="{{ '1. get free 10 points' |default_if_none:'1. get free 10 points!'}}">
-        <button type="submit" class="btn btn-primary">점수주세요</button>
+        <input type="text" class="form-control" name="reason" id="reason"
+        readonly value="{{ '환경사랑에 참여합니다' |default_if_none:'1.환경사랑약속'}}">
+        <p><p>
+        <button type="submit" class="btn btn-primary">약속해요</button>
     </form>
 </div>
 {% endblock %}  
@@ -31,7 +33,7 @@
         </span>
     </div>
 <div>
-    <a href="{% url 'common:point' user.id  %}" 
+    <a href="{% url 'common:point' %}" 
        class="small"><small>댓글 추가 ..</small></a>  <!-- 댓글 추가 링크 -->
 </div>
 <!-- 질문 댓글 End -->

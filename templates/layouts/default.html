@@ -7,9 +7,24 @@
       </div>
       {% comment %} <div id='particles-js'></div> {% endcomment %}
       <div class="wrapper">
+
+
+        {% if messages %}
+        <div class="container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                [{{ message.tags }}]
+                [{{ message.message }}]
+                </div>
+        {% endfor %}
+        </div>
+        {% endif %}
+
+        
         {% block content %}
         {% endblock %}
       </div>
   </div>
+  
     {% include "includes/footer.html" %}
 </html>
