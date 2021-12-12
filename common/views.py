@@ -233,11 +233,11 @@ def point(request):
                 point = form.save(commit=False)
                 point.owner = request.user
                 point.date = timezone.now()
-                point.point = 30
+                point.point = 20
                 point.reason = "환경사랑 참여 약속"
                 point.event = "1.환경사랑참여"
                 point.save()
-                messages.info(request, '초록점수 10점을 받았습니다.')
+                messages.info(request, '초록점수 20점을 받았습니다.')
                 return redirect('common:point')
     else:
         form = PointForm()
