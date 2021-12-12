@@ -17,6 +17,7 @@ from .forms import QuestionForm, AnswerForm, CommentForm
 def index(request):
     return render(request, 'pybo/index.html')
 
+# 재활용팁
 def tip(request):
     return render(request, 'pybo/tip.html')
 def plastic(request):
@@ -27,6 +28,10 @@ def balpo(request):
     return render(request,'pybo/tip/balpo.html')
 def vinyl(request):
     return render(request,'pybo/tip/vinyl.html')
+
+# 오류신고
+def error(request):
+    return render(request, 'pybo/error.html')
 
 
 

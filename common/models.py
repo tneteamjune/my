@@ -80,14 +80,7 @@ def add_points(sender, instance, created, **kwargs):
         
 
 class Contact(models.Model):
-    # ADD, IDEA, ERROR, ETC = 'add', 'idea', 'error', 'etc'
-    # CONTACT_TYPE_CHOICES = (
-    #     (ADD, _('휴지통 추가 설치가 필요해요')),
-    #     (IDEA, _('이런 기능이 있었으면 해요')),
-    #     (ERROR, _('사이트에 오류가 있어요')),
-    #     (ETC, _('그 외 문의가 있어요')),
-    # )
-    
+   
     ADD, IDEA, ERROR, ETC = 'add', 'idea', 'error', 'etc'
     TYPE_CHOICES = (
         (ADD, '휴지통 추가 설치가 필요해요'),
@@ -124,54 +117,4 @@ class Contact(models.Model):
 class Photo(models.Model):
     contact = models.ForeignKey(Contact, on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to='images/', blank=True, null=True)
-
-
-
-#작업중
-
-# class PointsEntry(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     date = models.DateTimeField(default=timezone.now)
-#     points = models.IntegerField(null=True)
-#     reason = models.TextField(null=True)
-
-#     def __str__(self):
-#         return str(self.date) + "-" + str(self.user)
-
-#     def save(self, *args, **kwargs):
-#         super().save(*args, **kwargs)
-#         relatedEntries = PointsEntry.objects.filter(user=self.user)
-#         self.user.profile.greenpoint = sum([entry.points for entry in relatedEntries])
-#         self.user.save()
-
-# @receiver(post_save, sender=User)
-# def create_user_points(sender, instance, created, **kwargs):
-#     if created:
-#         obj = PointsEntry.objects.create(user = instance)
-#         obj.points = 10
-#         obj.reason = "welcome point"
-#         obj.save()
-
-# class MeetingKey(models.Model):
-#     meetingKey = models.CharField(max_length=64, default=hashKey)
-#     name = models.TextField()
-#     date = models.DateTimeField(auto_now_add=True)
-#     points = models.IntegerField(default=0)
-#     desc = models.TextField()
-
-#     def save(self, *args, **kwargs):
-#         super().save(*args, **kwargs)
-
-#     def __str__(self):
-#         return self.name
-
-#     def get_absolute_url(self):
-#         return reverse('meetingList', kwargs={'pk' : self.id})
-
-# class MeetingEntry(models.Model):
-#     student = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-#     meeting = models.ForeignKey(MeetingKey, on_delete=models.CASCADE, null=True)
-
-
-
 

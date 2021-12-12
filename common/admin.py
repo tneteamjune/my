@@ -10,7 +10,7 @@ from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 # Profile 모델을 따로 보기 원치 않으면 생략함.
 
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'phone', 'greenpoint',)
+    list_display = ('user', 'greenpoint', 'coupon')
 
 class ProfileInline(admin.StackedInline):
     model = Profile
@@ -43,14 +43,24 @@ admin.site.register(Profile, ProfileAdmin)
 
 
 
-# Photo 클래스를 inline으로 나타낸다.
-class PhotoInline(admin.TabularInline):
-    model = Photo
+# # Photo 클래스를 inline으로 나타낸다.
+# class PhotoInline(admin.TabularInline):
+#     model = Photo
+# # Post 클래스는 해당하는 Photo 객체를 리스트로 관리하는 한다. 
+# class PostAdmin(admin.ModelAdmin):
+#     inlines = [PhotoInline, ]
+# # Register your models here.
+# admin.site.register(Photo, PostAdmin)
 
-# Post 클래스는 해당하는 Photo 객체를 리스트로 관리하는 한다. 
-class PostAdmin(admin.ModelAdmin):
-    inlines = [PhotoInline, ]
 
-# Register your models here.
-admin.site.register(Contact, PostAdmin)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ('subject', 'content', 'user', 'email', 'imgs')
+
+class ContactInline(admin.StackedInline):
+    model = Contact
+    max_num = 1
+    can_delete = False
+    verbose_name_plural = '제안하기'
+
+admin.site.register(Contact, ContactAdmin)
 

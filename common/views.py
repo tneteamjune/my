@@ -59,6 +59,8 @@ def change(request):
 def contact(request):
     if(request.method == 'POST'):
         contact_form = ContactForm(request.POST, instance=request.user)
+        # formsave = contact_form.save()
+        # update_session_auth_hash(request, formsave)
         if contact_form.is_valid():
             formsave = contact_form.save()
             update_session_auth_hash(request, formsave)
@@ -85,7 +87,7 @@ def contact(request):
             messages.info(request, '제안이 제출되었습니다.')
             return redirect('common:contact')
         else :
-            messages.warning(request, ('입력 정보를 다시 한번 확인해 주세요.'))
+            messages.warning(request, ('상세 내용은 필수 항목입니다.'))
             update_session_auth_hash(request, contact_form)
             # return redirect('common:contact')
         # return redirect('/detail/' + str(post.id))
@@ -247,66 +249,6 @@ def point(request):
         form = PointForm()
     context = {'form': form}
     return render(request, 'common/point/points.html', context)
-
-
-
-# # 작업중
-# @login_required(login_url='common:login')
-# def points_get(request, instance):
-#     if request.method == "POST":
-#         obj = PointsEntry.objects.create(user = instance)
-#         obj.user = request.user.id
-#         obj.points = 10
-#         obj.reason = "get 10 points!"
-#         obj.save()
-#     return render(request, 'common/point/points_get.html')
-
-
-
-# def points_entrys(request):
-#     form = PointsForm(request.POST or None)
-#     query = request.GET.get('meetingKey')
-#     if query is not None:
-#         form.initial['meetingKey'] = query
-
-#     # Only do something if the request is post
-#     if request.method == "POST":
-#         form = PointsForm(request.POST)
-#         # Make sure noone is trying to hack us. Can use cleaned_data after calling is_valid
-#         if form.is_valid():
-#             # If the meetingkey is not valid then stop the program
-
-#             # Get the meetingKey object associated with the meeting key
-#             data = MeetingKey.objects.filter(meetingKey=form.cleaned_data['meetingKey'])
-#             if data.exists() == False:
-#                 raise ValidationError(_('Key does not exist.'))
-#             # Startblock
-#             # We are going to check if a user exists. If it doesn't then we are going to create one
-#             formInput = form.cleaned_data
-#             newID = hashUserNo(formInput['user_ID'])
-#             if User.objects.filter(userNo=newID).exists() == False:
-#                 newID = hashUserNo(formInput['user_ID'])
-#                 newUser = User(userNo=formInput['user_ID'], firstName=(formInput['firstName']).lower(), lastName=(formInput['lastName']).lower(), points=0)
-#                 newUser.save()
-#             # EndBlock
-#             # After creating the user, we will fetch it based on the inputted ID
-#             currentUser = User.objects.filter(userNo=hashUserNo(form.cleaned_data['user_ID'])).first()
-
-#             for object in PointsEntry.objects.filter(user=currentUser):
-#                 if object.meeting == data.first():
-#                     # raise ValidationError(_('Points already added.'))
-#                     return HttpResponse('Points already added.')
-
-#             messages.success(request, 'Request submitted succesfully!')
-#             form.save()
-#             form = PointsForm()
-#             # Save the form. Also adds a point entry
-#     context = {
-#         'form' : form,
-#     }
-#     return render(request, 'points/entry.html', context)
-
-
 
 
 
