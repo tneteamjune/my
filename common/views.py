@@ -60,6 +60,8 @@ def contact(request):
     if(request.method == 'POST'):
         contact_form = ContactForm(request.POST, instance=request.user)
         if contact_form.is_valid():
+            formsave = contact_form.save()
+            update_session_auth_hash(request, formsave)
             post = Contact()
             post.user = request.user
             post.subject = request.POST['subject']
@@ -84,10 +86,12 @@ def contact(request):
             return redirect('common:contact')
         else :
             messages.warning(request, ('입력 정보를 다시 한번 확인해 주세요.'))
+            update_session_auth_hash(request, contact_form)
             # return redirect('common:contact')
         # return redirect('/detail/' + str(post.id))
     else:
-        return render(request, 'common/contact.html')
+        contact_form = ContactForm(instance=request.user)
+    return render(request, 'common/contact.html', {'contact_form': contact_form})
 
 def greenpoint(request):
     return render(request, 'common/point/greenpoint.html')
@@ -210,7 +214,7 @@ def points_list(request):
     return render(request, 'common/point/points_list.html', context)
 
 
-# 10점받기
+# 환경사랑 참여 점수받기
 @login_required(login_url='common:login')
 def point(request):
     user = get_object_or_404(User, pk=request.user.id)
