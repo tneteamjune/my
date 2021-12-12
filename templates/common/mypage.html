@@ -18,7 +18,7 @@
         <div class= "shadow text-center">
           <div class="lineage">
             <h3><span class='text-black'>안녕하세요,
-               <span class='text-info' style='font-weight:bold;'>{{ user.first_name }}</span>
+               <span class='text-black' style='font-weight:bold;'>{{ user.first_name }}</span>
               <span class='text-black'> 님!</h3>
           </div>
 
@@ -56,14 +56,14 @@
           <p>
           {% with percent=user.profile.greenpoint|divide:totalPoints %}
           <div class ="hr-large lineage"></div>
-          <h3><span class='text-black'>초록점수  </span><span class = "text-info lineage">{{ user.profile.greenpoint }} points<span class='text-black'> 를 모으셨어요.  </span></h2>
+          <h4><span class='text-black'>초록점수  </span><span class = "text-success lineage">{{ user.profile.greenpoint }} points<span class='text-black'> 를 모으셨어요.  </span></h4>
           {% endwith %}
 
           <div class="collapsable spacedCol text-left">
               <p style='text-align: right'>
               <a class="btn btn-dark lineage" data-toggle="collapse" href="#history" role="button" 
               aria-expanded="false" aria-controls="history">
-                History
+                적립내역상세
               </a>
             </p>
             <div class="collapse" id="history">
@@ -71,7 +71,7 @@
                 {% for entry in pointArr %}
                 <div class="row">
                     <div class="col">
-                      <p><span class="text-info">{{ entry.point }} points</span> <span class='text-white'>from {{ entry.reason }} on {{ entry.date }}</span></p>
+                      <p><span class="text-success" style='font-weight:bold;'>{{ entry.point }} points</span> <span class='text-white'>from {{ entry.reason }} on {{ entry.date }}</span></p>
                     </div>
                 </div>
                 {% endfor %}

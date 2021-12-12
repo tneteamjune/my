@@ -20,6 +20,11 @@
                   <a class="nav-link" href="{% url 'common:greenpoint' %}">초록점수</a>
               </li>
             </div>
+            <div id="event">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'common:event' %}">EVENT</a>
+                </li>
+              </div>
             <div id="MyPage">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'common:mypage' %}">MyPage</a>
@@ -27,7 +32,7 @@
               </div>
 
             {% if user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link" href="{% url 'common:logout' %}"><b style='color:skyblue'>{{ user.username }}</b>(logout)</a>
+            <li class="nav-item"><a class="nav-link" href="{% url 'common:logout' %}"><b class='text-info'style='font-weight:bold;'>{{ user.username }}</b>(logout)</a>
             {% else %}
             <li class="nav-item"><a class="nav-link" href="{% url 'common:login' %}">Login</a>
             {% comment %} <li class="nav-item"><a class="nav-link" href="{% url 'common:signup' %}">Signup</a></li> {% endcomment %}

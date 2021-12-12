@@ -103,7 +103,7 @@ class Contact(models.Model):
     content = models.TextField()
     create_date = models.DateTimeField()
     modify_date = models.DateTimeField(null=True, blank=True)
-    image = models.ImageField(upload_to='images/',blank=True, null=True)
+    imgs = models.ImageField(upload_to='images/', blank=True, null=True)
     # type = models.CharField(
     #     verbose_name=_("어떤 제안이 있으신가요?"),
     #     max_length=20,

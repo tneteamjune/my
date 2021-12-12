@@ -31,11 +31,8 @@ class PointForm(forms.ModelForm):
 class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
-        fields = (
-            "user",
-            "email",
-            "content",
-        )
+        fields = ("email", "content", 'imgs')
+    
         # select = forms.CharField(widget=forms.Select(choices=TYPE_CHOICES))
         
 

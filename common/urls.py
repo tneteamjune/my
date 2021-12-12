@@ -15,6 +15,7 @@ urlpatterns = [
     path('greenpoint/', views.greenpoint, name='greenpoint'),
     path('points_list/', views.points_list, name='points_list'),
     path('quiz/', views.quiz, name='quiz'),
+    path('event/', views.event, name='event'),
 
     path('contact/', views.contact, name='contact'),
 

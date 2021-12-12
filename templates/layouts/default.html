@@ -13,8 +13,8 @@
         <div class="container">
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags }}">
-                [{{ message.tags }}]
-                [{{ message.message }}]
+                {% comment %} [{{ message.tags }}] {% endcomment %}
+                {{ message.message }}
                 </div>
         {% endfor %}
         </div>
@@ -25,6 +25,6 @@
         {% endblock %}
       </div>
   </div>
-  
+
     {% include "includes/footer.html" %}
 </html>

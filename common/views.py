@@ -9,7 +9,7 @@ from django.shortcuts import render, get_object_or_404, redirect, resolve_url
 from django.utils import timezone
 from django.contrib.auth.models import User
 from common.models import Profile, Point, Contact, Photo
-from common.forms import PointForm
+from common.forms import PointForm, ContactForm
 
 def signup(request):
     """
@@ -48,6 +48,7 @@ def change(request):
             messages.success(request, ('회원정보가 변경되었습니다!'))
             return redirect('common:mypage')
         else:
+            messages.warning(request, ('입력 정보를 다시 한번 확인해 주세요.'))
             update_session_auth_hash(request, user_form)            
     else:
         user_form = UserForm(instance=request.user)
@@ -57,25 +58,33 @@ def change(request):
 #제안하기
 def contact(request):
     if(request.method == 'POST'):
-        post = Contact()
-        post.subject = request.POST['subject']
-        post.content = request.POST['content']
-        post.create_date = timezone.datetime.now()
-        post.type
-        post.user = request.user
-        post.save()
-        # name 속성이 imgs인 input 태그로부터 받은 파일들을 반복문을 통해 하나씩 가져온다 
-        for img in request.FILES.getlist('imgs'):
-            # Photo 객체를 하나 생성한다.
-            photo = Photo()
-            # 외래키로 현재 생성한 Post의 기본키를 참조한다.
-            photo.contact = post
-            # imgs로부터 가져온 이미지 파일 하나를 저장한다.
-            photo.image = img
-            # 데이터베이스에 저장
-            photo.save()
-        messages.info(request, '제안이 제출되었습니다.')
-        return redirect('common:contact')
+        contact_form = ContactForm(request.POST, instance=request.user)
+        if contact_form.is_valid():
+            post = Contact()
+            post.user = request.user
+            post.subject = request.POST['subject']
+            post.content = request.POST['content']
+            post.create_date = timezone.datetime.now()
+            try :
+                post.imgs = request.FILES['imgs']
+            except :
+                pass
+            post.save()
+            # # name 속성이 imgs인 input 태그로부터 받은 파일들을 반복문을 통해 하나씩 가져온다 
+            # for img in request.FILES.getlist('imgs'):
+            #     # Photo 객체를 하나 생성한다.
+            #     photo = Photo()
+            #     # 외래키로 현재 생성한 Post의 기본키를 참조한다.
+            #     photo.contact = post
+            #     # imgs로부터 가져온 이미지 파일 하나를 저장한다.
+            #     photo.image = img
+            #     # 데이터베이스에 저장
+            #     photo.save()
+            messages.info(request, '제안이 제출되었습니다.')
+            return redirect('common:contact')
+        else :
+            messages.warning(request, ('입력 정보를 다시 한번 확인해 주세요.'))
+            # return redirect('common:contact')
         # return redirect('/detail/' + str(post.id))
     else:
         return render(request, 'common/contact.html')
@@ -85,6 +94,9 @@ def greenpoint(request):
 
 def quiz(request):
     return render(request, 'common/point/quiz.html')
+
+def event(request):
+    return render(request, 'common/event.html')
 
 monthRef = {
     8 : 'August',
@@ -221,7 +233,7 @@ def point(request):
                 point = form.save(commit=False)
                 point.owner = request.user
                 point.date = timezone.now()
-                point.point = 10
+                point.point = 30
                 point.reason = "환경사랑 참여 약속"
                 point.event = "1.환경사랑참여"
                 point.save()
