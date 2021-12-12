@@ -16,11 +16,11 @@
                     </p>
                 </div>
             </div>
-            <p>
+            <p><p>
             <div class="row clearfix">
                 <div class="col-md-6">
-                    <h3>어떻게 받을 수 있나요?</h3><p>
-
+                    <h3>Q. 어떻게 받을 수 있나요?</h3><p>
+                    <p><span class="text-dark" style='font-weight:bold;'>1. 오류신고에 참여해 주세요.<p>
                     <div class="cover">
                         <p><a class href = {% url 'common:contact' %}>
                             <img src="/static/image/error.png" alt = "quiz" style="max-width:70%; height:auto;">
@@ -29,7 +29,6 @@
                     <div class="info">
                         <p>
                           {% blocktrans trimmed %}
-                          <span class="text-dark" style='font-weight:bold;'>1. 오류신고에 참여해 주세요.<p>
                           지도에 휴지통 위치가 잘못 표시되었나요?
                           휴지통의 정보가 실제 내용과 다른가요?
                           올바른 내용으로 수정할 수 있도록 잘못된 내용을 알려주세요.
@@ -41,6 +40,7 @@
                 <p><p>
 
                     <div class="cover">
+                        <span class="text-dark" style='font-weight:bold;'>2. 제안하기에 참여해 주세요.</span><p>
                         <p><a class href = {% url 'common:contact' %}>
                             <img src="/static/image/suggestion.png" alt = "suggestion" style="max-width:70%; height:auto;">
                         </a>
@@ -48,7 +48,6 @@
                     <div class="info">
                         <p>
                           {% blocktrans trimmed %}
-                          <span class="text-dark" style='font-weight:bold;'>2. 제안하기에 참여해 주세요.</span><p>
                             '휴지통을 찾아서'에 주실 소중한 의견이 있으신가요?
                              지금 바로 제안하기에 참여해 주세요. 
                              제안이 채택되면 초록점수를 적립하여 드립니다.
@@ -57,12 +56,12 @@
                         </p>                     
                     </div>
                 </div>
-                <p><p>
+                <p><p><p><p><p><p>
 
-                <p><p>
                 <div class="row clearfix">
                     <div class="col-md-6">
-                        <h3>어디에 사용할 수 있나요?</h3>
+                        <h3>Q. 어디에 사용할 수 있나요?</h3>
+                        <span class="text-dark" style='font-weight:bold;'>쿠폰으로 교환할 수 있어요.<p>
                         <div class="cover">
                             <p><a class href = {% url 'common:mypage' %}>
                                 <img src="/static/image/coupon.png" alt = "quiz" style="max-width:70%; height:auto;">
@@ -71,18 +70,14 @@
                         <div class="info">
                             <p>
                               {% blocktrans trimmed %}
-                              <span class="text-dark" style='font-weight:bold;'>쿠폰으로 교환할 수 있어요.<p>
+                              <span class="text-dark" style='font-weight:bold;'>1. 쿠폰으로 교환할 수 있어요.<p>
                                 그런데 아직 쿠폰 시스템이 없어서 쓸말이 없어요......
                               {% endblocktrans %}
                             </p>                     
                         </div>
                     </div>
 
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" 
-            style="font-size:20px";input type="button" onclick=href="{% url 'common:points_list' %}">[EVENT]실시간 초록점수순위</a>
-        
-            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!" 
-            style="font-size:20px";input type="button" onclick=href="{% url 'common:point' %}">초록점수받기</a>
+            
             </br>
         </div>
         </section>
