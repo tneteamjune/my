@@ -10,7 +10,15 @@
     <div>
         <img src="/static/image/green_promise.png" style="max-width:100%; height:auto;" alt="분리수거 팁을 알려드려요">
     </div>
-    <div style="text-align:center;">
+    
+        <form method="post" class="post-form" action="{% url 'common:point' %}">
+            {% csrf_token %}
+            {% include "form_errors.html" %}
+            <div class="form-group">
+
+            <input type="text" class="form-control" name="reason" id="reason"
+            value="{{ '' |default_if_none:'1.환경사랑약속'}}">
+        <div style="text-align:center;">
         <p class="bg-success center-block">
         <button type="submit" class="btn btn-success">약속해요</button>
     </form>
