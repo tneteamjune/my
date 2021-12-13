@@ -91,7 +91,7 @@ class Contact(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     phone = models.CharField(max_length=30, blank=True, null=True)
-    email = models.CharField(max_length=50)
+    email = models.CharField(max_length=50, blank=True, null=True)
     subject = models.CharField(max_length=200)
     content = models.TextField()
     create_date = models.DateTimeField()

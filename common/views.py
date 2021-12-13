@@ -58,7 +58,7 @@ def change(request):
 #제안하기
 def contact(request):
     if(request.method == 'POST'):
-        contact_form = ContactForm(request.POST, instance=request.user)
+        contact_form = ContactForm(request.POST)
         # formsave = contact_form.save()
         # update_session_auth_hash(request, formsave)
         if contact_form.is_valid():
@@ -88,11 +88,11 @@ def contact(request):
             return redirect('common:contact')
         else :
             messages.warning(request, ('상세 내용은 필수 항목입니다.'))
-            update_session_auth_hash(request, contact_form)
+            # update_session_auth_hash(request, contact_form)
             # return redirect('common:contact')
         # return redirect('/detail/' + str(post.id))
     else:
-        contact_form = ContactForm(instance=request.user)
+        contact_form = ContactForm()
     return render(request, 'common/contact.html', {'contact_form': contact_form})
 
 def greenpoint(request):
