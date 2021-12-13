@@ -55,7 +55,7 @@
                 <div class="form-group">
                   <label for="email">이메일 *</label>
                   <input type="text" class="form-control" name="email" id="email"
-                        readonly value="{{ form.email.value|default:user.email }}">
+                        readonly value="{{ form.email.value|default_if_none:user.email }}">
                   </div>
 
              <div class="form-group">

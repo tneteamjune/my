@@ -28,6 +28,10 @@ def balpo(request):
     return render(request,'pybo/tip/balpo.html')
 def vinyl(request):
     return render(request,'pybo/tip/vinyl.html')
+def paper(request):
+   return render(request,'pybo/paper.html')
+def can(request):
+   return render(request,'pybo/can.html')
 
 # 오류신고
 def error(request):

@@ -1,22 +1,18 @@
-{% extends 'layouts/default.html' %}
-{% load pybo_filter %}
 {% load static %}
-{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>스티로폼은 이렇게 버려요</title>
+    <title>종이는 이렇게 버려요</title>
     <link href="{% static 'css/trash.css' %}" rel="stylesheet">
+    <style>
+        img{ margin-right: 20px; margin-bottom: 10px;  width:auto; height:100%; vertical-align:middle;}
+        p{float:left;}
+    </style>
 </head>
 <body>
-    <div id="btn_group">
-        <button onclick="history.back()">뒤로가기</button>
-        <button onclick="location.href='/'">지도보기</button>
-    </div>
-    <img src="/static/image/balpo.png" alt = "올바른분리수거_스티로폼" style="max-width:100%; height:auto;">
+    <img src="/static/image/balpo1.jpg" alt = "플라스틱배출방법" style="max-width: 100%; height: auto; ">
 </body>
 </html>
-{% endblock %}

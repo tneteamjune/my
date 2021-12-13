@@ -11,6 +11,8 @@ urlpatterns = [
     path('tip/glass/' ,views.glass, name='glass'),
     path('tip/balpo/' ,views.balpo, name='balpo'),
     path('tip/vinyl/' ,views.vinyl, name='vinyl'),
+    path('tip/paper/' ,views.paper, name='paper'),
+    path('tip/can/' ,views.can, name='can'),
 
 
     # notice 

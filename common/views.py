@@ -66,6 +66,7 @@ def contact(request):
             update_session_auth_hash(request, formsave)
             post = Contact()
             post.user = request.user
+            post.email = request.POST['email']
             post.subject = request.POST['subject']
             post.content = request.POST['content']
             post.create_date = timezone.datetime.now()
