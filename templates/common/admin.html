@@ -1,0 +1,65 @@
+{% extends 'layouts/default.html' %}
+{% load static %}
+{% load mathTags %}
+{% block content %}
+
+<head>
+  <script src="{% static 'js/Chart.bundle.min.js' %}"></script>
+  <script src="{% static 'js/loading-bar.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'css/loading-bar.css' %}">
+  <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
+ </head>
+
+ <p>
+<div class="student container">
+  <div class="row">
+    <div class="col">
+      <div class ="student-breakdown">
+        <div class= "shadow text-center">
+          <div class="lineage">
+            <h3><span class='text-black'>관리자페이지입니다.
+               <span class='text-black' style='font-weight:bold;'>{{ user.first_name }}</span>
+              <span class='text-black'> 님!</h3>
+          </div>
+
+          <h2 style='text-align: right'>
+            <a class="btn btn-light lineage" href="{% url 'common:change' %}"role="button"
+             aria-expanded="false" aria-controls="history">
+            회원정보변경
+            </a>
+           </h2>
+
+          <table class="table table-light bg-light table-bordered table-condensed table-striped table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <td>{{ user.username }}</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>이름</th>
+                <td>{{ user.first_name }}</td>
+              </tr>
+              <tr>
+                <th>연락처</th>
+                <td>{{ user.last_name }}</td>
+              </tr>
+              <tr>
+                <th>이메일</th>
+                <td>{{ user.email }}</td>
+              </tr>
+
+            </tbody>
+          </table>
+
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<p>
+  <p>
+
+{% endblock %}

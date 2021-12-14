@@ -62,8 +62,7 @@ def contact(request):
         # formsave = contact_form.save()
         # update_session_auth_hash(request, formsave)
         if contact_form.is_valid():
-            formsave = contact_form.save()
-            update_session_auth_hash(request, formsave)
+            # update_session_auth_hash(request, formsave)
             post = Contact()
             post.user = request.user
             post.email = request.POST['email']
@@ -252,5 +251,10 @@ def point(request):
     return render(request, 'common/point/points.html', context)
 
 
-
+# 관리자페이지
+def admin(request):
+    if request.user.is_superuser():
+        return render(request, 'common/admin.html')
+    else:
+        return 
 
