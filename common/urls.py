@@ -22,7 +22,9 @@ urlpatterns = [
     #제안하기
     path('contact/', views.contact, name='contact'),
 
+    path('report/', views.report, name='report'), #경민 이것도 추가
+
     #관리자페이지
     path('admin/', views.admin, name='admin'),
-
+    
 ]

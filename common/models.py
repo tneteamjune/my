@@ -113,8 +113,42 @@ class Contact(models.Model):
     def __str__(self):
         return self.subject
 
-
 class Photo(models.Model):
     contact = models.ForeignKey(Contact, on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to='images/', blank=True, null=True)
 
+
+# 경민 오류신고
+class Report(models.Model):
+   
+    CORRECT, DELETE, ERROR, ETC = 'correct', 'delete', 'error', 'etc'
+    TYPE_CHOICES = (
+        (CORRECT, '재활용통이 아니라 휴지통이에요'),
+        (DELETE, '휴지통이 철거되었어요'),
+        (ERROR, '휴지통 위치가 조금 더 위에 있어요'),
+        (ETC, '바나나 밟고 미끄러져서 아파쪄')
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    phone = models.CharField(max_length=30, blank=True, null=True)
+    email = models.CharField(max_length=50, blank=True, null=True)
+    subject = models.CharField(max_length=200)
+    content = models.TextField()
+    create_date = models.DateTimeField()
+    modify_date = models.DateTimeField(null=True, blank=True)
+    imgs = models.ImageField(upload_to='images/', blank=True, null=True)
+    # type = models.CharField(
+    #     verbose_name=_("어떤 제안이 있으신가요?"),
+    #     max_length=20,
+    #     choices=CONTACT_TYPE_CHOICES,
+    #     default=ADD
+    # )
+    type = models.CharField(
+        choices=TYPE_CHOICES,
+        max_length=100, null=True, blank=True)
+
+    class Meta:
+        ordering = ('-create_date',)
+
+    def __str__(self):
+        return self.subject

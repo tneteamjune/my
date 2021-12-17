@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from pybo import views
+from mapdata import views
 
 urlpatterns = [
     # path('<int:question_id>/', views.detail, name='detail'),
@@ -12,6 +12,7 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('pybo/', include('pybo.urls')),
     path('common/', include('common.urls')),
+    path('mapdata/', include('mapdata.urls')),
     path('', views.index, name='index'),  # '/' 에 해당되는 path
 
     ]

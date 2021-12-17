@@ -8,8 +8,8 @@ from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render, get_object_or_404, redirect, resolve_url
 from django.utils import timezone
 from django.contrib.auth.models import User
-from common.models import Profile, Point, Contact, Photo
-from common.forms import PointForm, ContactForm
+from common.models import Profile, Point, Contact, Photo, Report
+from common.forms import PointForm, ContactForm, ReportForm
 
 def signup(request):
     """
@@ -258,3 +258,45 @@ def admin(request):
     else:
         return 
 
+
+# 경민 오류신고
+def report(request):
+    if(request.method == 'POST'):
+        report_form = ReportForm(request.POST)
+        # formsave = report_form.save()
+        # update_session_auth_hash(request, formsave)
+        if report_form.is_valid():
+            #formsave = report_form.save()
+            #update_session_auth_hash(request, formsave)
+            post = Report()
+            post.user = request.user
+            post.email = request.POST['email']
+            post.subject = request.POST['subject']
+            post.content = request.POST['content']
+            post.create_date = timezone.datetime.now()
+            try :
+                post.imgs = request.FILES['imgs']
+            except :
+                pass
+            post.save()
+            # # name 속성이 imgs인 input 태그로부터 받은 파일들을 반복문을 통해 하나씩 가져온다 
+            # for img in request.FILES.getlist('imgs'):
+            #     # Photo 객체를 하나 생성한다.
+            #     photo = Photo()
+            #     # 외래키로 현재 생성한 Post의 기본키를 참조한다.
+            #     photo.contact = post
+            #     # imgs로부터 가져온 이미지 파일 하나를 저장한다.
+            #     photo.image = img
+            #     # 데이터베이스에 저장
+            #     photo.save()
+            messages.info(request, '오류신고가 완료되었습니다.')
+            return redirect('common:report')
+        else :
+            messages.warning(request, ('상세 내용은 필수 항목입니다.'))
+            # update_session_auth_hash(request, report_form)
+            # return redirect('common:report')
+        # return redirect('/detail/' + str(post.id))
+    else:
+        report_form = ReportForm()
+    return render(request, 'common/report.html', {'report_form': report_form})
+# 경민 여기까지

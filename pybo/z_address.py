@@ -1,6 +1,6 @@
 import json
 
-file = open("./z_address_data/data_용산구.csv")
+file = open("./map_data.csv")
 
 file_list=[]      # 전체 리스트(raw data)
 line_list=[]      # 라인별 리스트

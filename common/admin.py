@@ -3,7 +3,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from .models import Profile, Photo, Contact
+from .models import Profile, Photo, Contact, Report
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 
  
@@ -63,4 +63,17 @@ class ContactInline(admin.StackedInline):
     verbose_name_plural = '제안하기'
 
 admin.site.register(Contact, ContactAdmin)
+
+
+#경민 오류신고 추가
+class ReportAdmin(admin.ModelAdmin):
+    list_display = ('subject', 'content', 'user', 'email', 'imgs')
+
+class ReportInline(admin.StackedInline):
+    model = Report
+    max_num = 1
+    can_delete = False
+    verbose_name_plural = '오류신고'
+
+admin.site.register(Report, ReportAdmin)
 

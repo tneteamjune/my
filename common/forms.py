@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Profile, Point, Contact
+from .models import Profile, Point, Contact, Report
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 
@@ -32,6 +32,11 @@ class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
         fields = ("email", "content", 'imgs')
-    
+        # select = forms.CharField(widget=forms.Select(choices=TYPE_CHOICES))
+        
+class ReportForm(forms.ModelForm):
+    class Meta:
+        model = Report
+        fields = ("email", "content", 'imgs')
         # select = forms.CharField(widget=forms.Select(choices=TYPE_CHOICES))
         
