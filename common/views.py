@@ -55,46 +55,6 @@ def change(request):
     return render(request, 'common/change.html', {'user_form': user_form})
 
 
-#제안하기
-def contact(request):
-    if(request.method == 'POST'):
-        contact_form = ContactForm(request.POST)
-        # formsave = contact_form.save()
-        # update_session_auth_hash(request, formsave)
-        if contact_form.is_valid():
-            # update_session_auth_hash(request, formsave)
-            post = Contact()
-            post.user = request.user
-            post.email = request.POST['email']
-            post.subject = request.POST['subject']
-            post.content = request.POST['content']
-            post.create_date = timezone.datetime.now()
-            try :
-                post.imgs = request.FILES['imgs']
-            except :
-                pass
-            post.save()
-            # # name 속성이 imgs인 input 태그로부터 받은 파일들을 반복문을 통해 하나씩 가져온다 
-            # for img in request.FILES.getlist('imgs'):
-            #     # Photo 객체를 하나 생성한다.
-            #     photo = Photo()
-            #     # 외래키로 현재 생성한 Post의 기본키를 참조한다.
-            #     photo.contact = post
-            #     # imgs로부터 가져온 이미지 파일 하나를 저장한다.
-            #     photo.image = img
-            #     # 데이터베이스에 저장
-            #     photo.save()
-            messages.info(request, '제안이 제출되었습니다.')
-            return redirect('common:contact')
-        else :
-            messages.warning(request, ('상세 내용은 필수 항목입니다.'))
-            # update_session_auth_hash(request, contact_form)
-            # return redirect('common:contact')
-        # return redirect('/detail/' + str(post.id))
-    else:
-        contact_form = ContactForm()
-    return render(request, 'common/contact.html', {'contact_form': contact_form})
-
 def greenpoint(request):
     return render(request, 'common/point/greenpoint.html')
 
@@ -137,6 +97,8 @@ def mypage(request):
 
     totalPoints = user.profile.greenpoint
     couponPoints = 100
+    if totalPoints >= 100:
+        totalPoints = couponPoints
 
     pointArr = Point.objects.filter(owner_id=userid).order_by('date')
 
@@ -250,53 +212,114 @@ def point(request):
     context = {'form': form}
     return render(request, 'common/point/points.html', context)
 
+#제안하기
+def contact(request):
+    if request.user.is_authenticated:
+        if(request.method == 'POST'):
+            contact_form = ContactForm(request.POST)
+            if contact_form.is_valid():
+                post = Contact()
+                post.user = request.user
+                post.email = request.POST['email']
+                post.subject = request.POST['subject']
+                post.content = request.POST['content']
+                post.create_date = timezone.datetime.now()
+                try :
+                    post.imgs = request.FILES['imgs']
+                except :
+                    pass
+                post.save()
+                messages.info(request, '제안이 제출되었습니다.')
+                return redirect('common:my_contact')
+            else :
+                messages.warning(request, ('상세 내용은 필수 항목입니다.'))
+        else:
+            contact_form = ContactForm()
+        return render(request, 'common/contact.html', {'contact_form': contact_form})
+    else :
+        return render(request, 'common/contact_none.html')
+
+
+# 오류신고 (신고 즉시 5점 적립)
+def report(request):
+    if request.user.is_authenticated:
+        if(request.method == 'POST'):
+            report_form = ReportForm(request.POST)
+            if report_form.is_valid():
+                post = Report()
+                post.user = request.user
+                post.email = request.POST['email']
+                post.content = request.POST['content']
+                post.create_date = timezone.datetime.now()
+                post.type = request.POST['type']
+                try :
+                    post.imgs = request.FILES['imgs']
+                except :
+                    pass
+                post.save()
+                point = Point()
+                point.owner = request.user
+                point.date = timezone.now()
+                point.point = 5
+                point.reason = "오류신고 참여"
+                point.event = "2.오류신고 참여"
+                point.save()
+                messages.info(request, '참여 감사합니다. 초록점수 5점을 받으셨습니다')
+                return redirect('common:report')
+            else :
+                messages.warning(request, ('상세 내용은 필수 항목입니다.'))
+        else:
+            report_form = ReportForm()
+        return render(request, 'common/report.html', {'report_form': report_form})
+    else :
+        return render(request, 'common/report_none.html')
+
 
 # 관리자페이지
 def admin(request):
-    if request.user.is_superuser():
-        return render(request, 'common/admin.html')
+    if request.user.is_superuser:
+        contacts = Contact.objects.all().order_by("-create_date")
+        if request.method == "POST":
+            contact_id = request.POST['id']
+            contact = Contact.objects.get(id=contact_id)
+            contact.select = 1
+            contact.save()
+        context = {
+            'contacts' : contacts,
+            }
+        return render(request, 'common/admin.html', context)
     else:
-        return 
+        return render(request, 'pybo/index.html')
+
+# 제안채택(사용자)
+def contact_point(request):
+    if request.method == "POST":
+        form = PointForm(request.POST)
+        point = form.save(commit=False)
+        point.owner = request.user
+        point.date = timezone.now()
+        point.point = 20
+        point.reason = "제안 채택"
+        point.event = request.POST['event']
+        point.save()
+        contact = Contact.objects.get(id=point.event)
+        contact.select = 2
+        contact.save()
+        messages.info(request, '초록점수 20점을 받았습니다.')
+        return redirect('common:my_contact')
+    else:
+        form = PointForm()
+    context = {'form': form }
+    return render(request, 'common/my_contact.html', context)
 
 
-# 경민 오류신고
-def report(request):
-    if(request.method == 'POST'):
-        report_form = ReportForm(request.POST)
-        # formsave = report_form.save()
-        # update_session_auth_hash(request, formsave)
-        if report_form.is_valid():
-            #formsave = report_form.save()
-            #update_session_auth_hash(request, formsave)
-            post = Report()
-            post.user = request.user
-            post.email = request.POST['email']
-            post.subject = request.POST['subject']
-            post.content = request.POST['content']
-            post.create_date = timezone.datetime.now()
-            try :
-                post.imgs = request.FILES['imgs']
-            except :
-                pass
-            post.save()
-            # # name 속성이 imgs인 input 태그로부터 받은 파일들을 반복문을 통해 하나씩 가져온다 
-            # for img in request.FILES.getlist('imgs'):
-            #     # Photo 객체를 하나 생성한다.
-            #     photo = Photo()
-            #     # 외래키로 현재 생성한 Post의 기본키를 참조한다.
-            #     photo.contact = post
-            #     # imgs로부터 가져온 이미지 파일 하나를 저장한다.
-            #     photo.image = img
-            #     # 데이터베이스에 저장
-            #     photo.save()
-            messages.info(request, '오류신고가 완료되었습니다.')
-            return redirect('common:report')
-        else :
-            messages.warning(request, ('상세 내용은 필수 항목입니다.'))
-            # update_session_auth_hash(request, report_form)
-            # return redirect('common:report')
-        # return redirect('/detail/' + str(post.id))
-    else:
-        report_form = ReportForm()
-    return render(request, 'common/report.html', {'report_form': report_form})
-# 경민 여기까지
+#나의 제안하기
+def my_contact(request):
+    userid = request.user.id
+    contacts = Contact.objects.filter(user_id=userid).order_by('-create_date')
+
+    context = {
+        'contacts' : contacts,
+        }
+    return render(request, 'common/my_contact.html', context)
+

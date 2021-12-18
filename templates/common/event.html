@@ -19,33 +19,29 @@
           color: rgb(255, 255, 255);
           text-shadow: 1px 1px 1px #000;
           border-radius: 10px;
-          background-color: rgb(8, 128, 58);
+          background-color: rgba(87, 155, 70, 0.664);
           background-image: linear-gradient(to top left,
                                           rgba(0, 0, 0, .2),
                                           rgba(0, 0, 0, .2) 30%,
                                           rgba(0, 0, 0, 0));
           box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6),
                       inset -2px -2px 3px rgba(0, 0, 0, .6);
-      }
-      
-      .event:hover {
-          background-color: rgb(23, 87, 48);
-      }
-      
-      .event:active {
-          box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6),
-                      inset 2px 2px 3px rgba(0, 0, 0, .6);
-      }
-    @font-face {
-    font-family: 'GowunDodum-Regular';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunDodum-Regular.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-    }
-    body {
-         font-family: 'GowunDodum-Regular';
-    }
-}
+        }
+        .event:hover {
+            background-color: rgb(46, 155, 88);
+        }
+        
+        @font-face {
+        font-family: 'GowunDodum-Regular';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunDodum-Regular.woff') format('woff');
+        font-weight: normal; font-style: normal;
+        }
+        body {
+            font-family: 'GowunDodum-Regular'; word-break: keep-all; font: size 10px;
+        }
+        .eventnum {
+            font-weight:bold; background: linear-gradient(to top, #FFE400 50%, transparent 50%);font-size: 1.2rem;
+        }
   </style>
 </head>
 <body>
@@ -54,20 +50,20 @@
         <div class="container" style="text-align: center;">
             <section id="event">
                 <div class="row">
-                    <div class="col-md-12" style="text-align: center; margin-top: 5%;">
-                        <img src="/static/image/event.png" alt = "event" style="float:left; max-width: 20%; height:auto; margin-left:100px; vertical-align: middle;">
-                        <h2 style="font-weight: bold;"></br>이벤트 참여하시고</br><a class='text-success'>초록점수</a> 받아가세요!</h2>
+                    <div class="col-md-12" style="margin-top: 5%;">
+                        <img src="/static/image/event.png" alt = "event" style="max-width: 20%; height:auto; vertical-align: middle;">
+                        <h2 style="font-weight: bold;">이벤트 참여하시고</br><a class='text-success'>초록점수</a> 받아가세요!</h2>
                     </div>
                 </div>
-            
+        
                 <hr>
                 <div class="cover">
-                    <img src="/static/image/1.png" alt = "event" style="float:left; max-width: 10%; height:auto; vspace=10; hspace=10;">
-                    <h5><a class='text-dark' style='font-weight:bold;'><span style="background: linear-gradient(to top, #FFE400 50%, transparent 50%)">이벤트 하나.</a></h5></span>
-                    <h6>'휴지통을 찾아서'에 <span style="color: rgb(247, 99, 83);">가입</span>만 하셔도 <span style="color: rgb(102, 128, 32);font-weight: bolder;">초록점수 10점</span>을 드려요.<p>
+                    <a><img src="/static/image/1.png" alt = "event" style=" max-width: 10%; height:auto; margin: 0.2rem; ">
+                    <span class="eventnum">이벤트 하나.</br></span></a>
+                <h6>'휴지통을 찾아서'에 <span style="color: rgb(247, 99, 83);">가입</span>만 하셔도 <span style="color: rgb(102, 128, 32);font-weight: bolder;">초록점수 10점</span>을 드려요.<p>
                         지금 바로 <a class href = {% url 'common:signup' %}>가입하기</a>로 가볼까요? 
-                    <p><a class href = {% url 'common:signup' %} style="text-align: center;">
-                        <img src="/static/image/coupon.jpg" alt = "greeinpoint" style="max-width:50%; height:auto;">
+                        <p><a class href = {% url 'common:signup' %} style="text-align: center;">
+                        <img src="/static/image/coupon.jpg" alt = "greenpoint" style="max-width:50%; height:auto;">
                     </a>
                 </div>
                 <div class="info">
@@ -81,8 +77,8 @@
                                 </br>                    
         
                 <div class="cover">
-                    <img src="/static/image/2.png" alt = "event" style="float:left; max-width: 10%; height:auto; vspace=1; hspace=1;">
-                    <h5><a class='text-dark' style='font-weight:bold;'><span style="background: linear-gradient(to top, #FFE400 50%, transparent 50%)">이벤트 둘.</span></a></h5>
+                    <img src="/static/image/2.png" alt = "event" style="max-width: 10%; height:auto; margin: 0.2rem; ">
+                    <span class="eventnum">이벤트 둘.</span>
                     <h6>환경사랑 참여를 약속하시면 <span style="color: rgb(102, 128, 32);font-weight: bolder;">초록점수 20점</span>을 드립니다.<p>
                         아래의 <span style="color: rgb(30, 148, 30);">서약서</span>를 클릭해서 <span style="color: rgb(236, 18, 18);">참여</span>해주세요!</h6><p>
                             <p><a class href = {% url 'common:point' %}>
@@ -100,11 +96,11 @@
                 <p></p>
                 </br>
                     <div class="cover">
-                        <img src="/static/image/3.png" alt = "event" style="float:left; max-width: 10%; height:auto; vspace=1; hspace=1;">
-                        <h5><a class='text-dark' style='font-weight:bold;'><span style="background: linear-gradient(to top, #FFE400 50%, transparent 50%)">이벤트 셋.</span>
+                        <img src="/static/image/3.png" alt = "event" style=" max-width: 10%; height:auto; margin: 0.2rem; ">
+                        <span class="eventnum">이벤트 셋.</span>
                             <a class='text-secondary' style='font-weight:bold;'>[Exhibition only]</a></h5>
                         <h6>얼마나 열심히 참여하셨는지 궁금하신가요? 
-                            <p>모든 회원 중 <span style="color: rgb(87, 57, 196);font-weight: bolder;">나의 초록점수 순위</span>를 확인할 수 있어요.</h6><p>
+                            <p>모든 회원 중 <span style="color: rgb(118, 92, 209);font-weight: bolder;">나의 초록점수 순위</span>를 확인할 수 있어요.</h6><p>
                              <a class="event" href="#!" input type="button" onclick=href="{% url 'common:points_list' %}">실시간 순위 확인하기</a>
                      
                     </div>

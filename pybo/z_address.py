@@ -1,6 +1,6 @@
 import json
 
-file = open("./map_data.csv")
+file = open("./z_address_data/data_total_removed.csv")
 
 file_list=[]      # 전체 리스트(raw data)
 line_list=[]      # 라인별 리스트
@@ -22,25 +22,27 @@ del file_list[0]
 for i in range(len(file_list)) :
    line_list.append(file_list[i].split(','))
 
-for i in range(len(line_list)) :
-   line_no.append(line_list[i][0])
-   address.append(line_list[i][1])
-   longitute.append(line_list[i][2])
-   latitude.append(line_list[i][3])
-   status.append(line_list[i][4])
-   address_detail.append(line_list[i][5])
-   address_type.append(line_list[i][6])
-   trash_type.append(line_list[i][7])
-   gov.append(line_list[i][8])
-   gov_num.append(line_list[i][9])
+for line in line_list :
+   line_no.append(line[0])
+   address.append(line[1])
+   longitute.append(line[2])
+   latitude.append(line[3])
+   status.append(line[4])
+   address_detail.append(line[5])
+   address_type.append(line[6])
+   trash_type.append(line[7])
+   gov.append(line[8])
+   gov_num.append(line[9])
 
+print("var positions= [")
 for i in range(len(line_list)) :
     print('{')
+    print("number:'"+ line_no[i] +"',")
     print("title:'"+ trash_type[i] +"',")
     print("latlng: new kakao.maps.LatLng("+latitude[i]+','+longitute[i]+'),')
-    print("content: '"+'<div style="padding:5px;">'+address_detail[i]+"'")
+    print("content:'"+address_detail[i]+"'")
     print('},')
-
+print("];")
 
 # json data 생성
 # file_path = ".test.json"

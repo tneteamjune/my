@@ -1,0 +1,10 @@
+{
+ "positions": [
+            {
+            "title":"일반쓰레기수거용",
+            "latlng": "new kakao.maps.LatLng(37.53114116,126.9804724)",
+            "content": "<div style='padding:5px;'>서울특별시 용산구 강변삼성아파트앞 횡단보도 버스정류장(03-299) "
+            }
+  ]
+}
+

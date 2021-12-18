@@ -1,65 +1,70 @@
 {% extends 'layouts/default.html' %}
-{% load static %}
-{% load mathTags %}
+{% load pybo_filter %}
 {% block content %}
-
-<head>
-  <script src="{% static 'js/Chart.bundle.min.js' %}"></script>
-  <script src="{% static 'js/loading-bar.js' %}"></script>
-  <link rel="stylesheet" href="{% static 'css/loading-bar.css' %}">
-  <script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
- </head>
-
- <p>
-<div class="student container">
-  <div class="row">
-    <div class="col">
-      <div class ="student-breakdown">
-        <div class= "shadow text-center">
-          <div class="lineage">
-            <h3><span class='text-black'>관리자페이지입니다.
-               <span class='text-black' style='font-weight:bold;'>{{ user.first_name }}</span>
-              <span class='text-black'> 님!</h3>
-          </div>
-
-          <h2 style='text-align: right'>
-            <a class="btn btn-light lineage" href="{% url 'common:change' %}"role="button"
-             aria-expanded="false" aria-controls="history">
-            회원정보변경
-            </a>
-           </h2>
-
-          <table class="table table-light bg-light table-bordered table-condensed table-striped table-hover">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <td>{{ user.username }}</td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th>이름</th>
-                <td>{{ user.first_name }}</td>
-              </tr>
-              <tr>
-                <th>연락처</th>
-                <td>{{ user.last_name }}</td>
-              </tr>
-              <tr>
-                <th>이메일</th>
-                <td>{{ user.email }}</td>
-              </tr>
-
-            </tbody>
-          </table>
-
-            </div>
-          </div>
+<div class="container my-3">
+  <a class="text-center">
+    <h5>관리자페이지</h5></a>
+    <div class="text-right">
+     <a href="{% url 'admin:index' %}">django admin page</a>로 이동
+        </div>
+    <h5>제안하기LIST</h5>
+    <div class="row justify-content-between my-3">
+        <div class="col-2">
         </div>
     </div>
-  </div>
-</div>
-<p>
-  <p>
+    <table class="table">
+        <thead>
+        <tr class="text-center thead-dark">
+            <th>번호</th>
+            <th>제목</th>
+            <th style="width:50%">내용</th>
+            <th>첨부</th>
+            <th>제안자</th>
+            <th>작성일시</th>
+            <th>채택</th>
+        </tr>
+        </thead>
+        <tbody>
+          {% if contacts %}
+          {% for contact in contacts %}
+          <tr class="text-center">
+              <td class="text-left">{{ contact.id }}</td>
+              <td>{{ contact.subject }}</td>
+              <td>{{ contact.content }}</td>
+              {% if contact.imgs %}
+              <td><a href="{{contact.imgs.url}}"><img src="{{contact.imgs.url}}" height="50"></a></td>
+              {% else %}
+              <td>None</td>
+              {% endif %}
+              <td>{{ contact.user }}</td>
+              <td>{{ contact.create_date }}</td>
 
+              {% if contact.select == 0 %}
+              <td><form method="post" class="post-form" action="{% url 'common:admin' %}">
+                {% csrf_token %}
+                <input type="hidden" class="form-control" name="id" id="id"
+                value="{{ contact.id |default_if_none:contact.id }}">
+                <input type="hidden" class="form-control" name="select" id="select"
+                value="{{ 1 |default_if_none:1 }}">
+                <button type="submit" class="btn btn-primary">채택하기</button></form></td>
+              {% elif contact.select == 1 %}
+              <td><button type="submit" class="btn btn-success">채택완료</button></td>
+              {% else %}
+              <td><button type="submit" class="btn btn-secondary">채택완료</button></td>
+              {% endif %}
+              </tr>
+          {% endfor %}
+          {% else %}
+        <tr>
+            <td colspan="3">등록된 제안이 없습니다.</td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+<form id="searchForm" method="get" action="{% url 'index' %}">
+    <input type="hidden" id="kw" name="kw" value="{{ kw|default_if_none:'' }}">
+    <input type="hidden" id="page" name="page" value="{{ page }}">
+    <input type="hidden" id="so" name="so" value="{{ so }}">
+</form>
 {% endblock %}

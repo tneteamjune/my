@@ -1,0 +1,28 @@
+{% extends 'layouts/default.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %} {% endblock title%}
+{% block content %}
+  <div class="container without-background public-form" id="flatpage">
+    <div id="value" class="row">
+      <div class="col-md-12">
+        <p><h2>{% trans "Any Questions?" %}</h2>
+
+        <p>{% trans "Please check this FAQ first." %}</p>
+
+        {% include 'includes/_faq.html' %}
+
+        <p>
+          {% blocktrans %}
+          <p><h6>더 궁금한 점이 있으신가요? 
+            <p>빠른 응답을 드리도록 노력하겠습니다.</h6>
+          {% endblocktrans %}
+        </p></p>
+
+
+
+                </div>
+              </div>
+            </div>
+{% endblock %}

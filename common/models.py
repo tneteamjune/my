@@ -97,12 +97,9 @@ class Contact(models.Model):
     create_date = models.DateTimeField()
     modify_date = models.DateTimeField(null=True, blank=True)
     imgs = models.ImageField(upload_to='images/', blank=True, null=True)
-    # type = models.CharField(
-    #     verbose_name=_("어떤 제안이 있으신가요?"),
-    #     max_length=20,
-    #     choices=CONTACT_TYPE_CHOICES,
-    #     default=ADD
-    # )
+    select = models.IntegerField(default=0) 
+    # 0=채택전   1=채택완료,점수받기전   2=채택완료,점수받기완료
+    
     type = models.CharField(
         choices=TYPE_CHOICES,
         max_length=100, null=True, blank=True)

@@ -35,12 +35,15 @@
               </div>
           {% endif %}
           <!-- 오류표시 End -->
-
+          <div class="text-danger">
+           * 제안하기 제출을 위해서는 먼저 <span><a href="{% url 'common:login' %}">로그인</a></span>을 해주세요.
+          </div>
+        </div>                 
 
           <div class="form-group">
             <label for="username">사용자ID *</label>
             <input type="text" class="form-control" name="username" id="username"
-                   readonly value="{{ user.username |default_if_none:'user.username' }}">
+                   readonly value="{{ '로그인이 필요한 서비스입니다.' |default_if_none:'로그인이 필요한 서비스입니다.' }}">
           </div>
 
                 {% comment %} <div class="form-group">
@@ -58,18 +61,18 @@
              <div class="form-group">
                      <label for="subject">제목 </label>
                      <input type="text" class="form-control" name="subject" id="subject"
-                            value="{{ form.subject.value }}">
+                     readonly value="{{ form.subject.value }}">
                  </div>
                  <div class="form-group">
                      <label for="content">상세내용 *</label>
                      <textarea class="form-control" name="content"
-                               id="content" rows="10">{{ form.content.value }}</textarea>
+                      id="content" rows="5"
+                      readonly value="{{ form.content.value }}"></textarea>
                  </div>
                  
                   {% csrf_token %}
                   <input type="file" name="imgs" id='imgs'> 
 
-                  <button type="submit" class="btn btn-primary">제출하기</button>
                  </form>
                 <p>
                 </div>

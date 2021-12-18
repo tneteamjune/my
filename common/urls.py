@@ -21,6 +21,8 @@ urlpatterns = [
 
     #제안하기
     path('contact/', views.contact, name='contact'),
+    path('contact_point/', views.contact_point, name='contact_point'),
+    path('my_contact/', views.my_contact, name='my_contact'),
 
     path('report/', views.report, name='report'), #경민 이것도 추가
 

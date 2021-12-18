@@ -10,7 +10,7 @@
 <div class="container my-3">
   <div class="row">
       <div class="col-5">
-          <h4>실시간 초록점수 순위</h4>
+          <h4>실시간 초록점수 현황</h4>
       </div>
   </div>
 
@@ -23,9 +23,9 @@
           <thead class="thead-light">
             <tr>
               <th scope="col">순위</th>
+              <th scope="col">이름(닉네임)</th>
               <th scope="col">초록점수</th>
-              <th scope="col">사용자 이름</th>
-              <th scope="col">(임시칸)</th>
+              <th scope="col">보유쿠폰</th>
             </tr>
           </thead>
           <tbody>
@@ -34,14 +34,14 @@
               <th scope="row">
                 {{ forloop.counter }}
               </th>
+              <td class="firstName">
+                {{ user.first_name }}
+                </td>
               <td class="points">
               {{ user.profile.greenpoint }}
               </td>
-              <td class="firstName">
-              {{ user.first_name }}
-              </td>
               <td class="lastName">
-              {{ user.last_name }}
+              {{ user.profile.coupon }}
               </td>
             </tr>
           {% endfor %}

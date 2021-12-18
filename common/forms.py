@@ -32,8 +32,7 @@ class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
         fields = ("email", "content", 'imgs')
-        # select = forms.CharField(widget=forms.Select(choices=TYPE_CHOICES))
-        
+
 class ReportForm(forms.ModelForm):
     class Meta:
         model = Report

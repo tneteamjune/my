@@ -23,6 +23,10 @@
           </div>
 
           <h2 style='text-align: right'>
+            <a class="btn btn-light lineage" href="{% url 'common:my_contact' %}"role="button"
+            aria-expanded="false" aria-controls="history">
+           나의 제안
+           </a>
             <a class="btn btn-light lineage" href="{% url 'common:change' %}"role="button"
              aria-expanded="false" aria-controls="history">
             회원정보변경
@@ -91,7 +95,7 @@
                         labels: [ '나의 초록점수', "쿠폰 획득까지 남은 초록점수"],
                         datasets: [{
                             label: 'Point distribution',
-                            data: [ {{ user.profile.greenpoint }}, {{ couponPoints }}-{{user.profile.greenpoint}} ],
+                            data: [ {{ user.profile.greenpoint }}, {{ couponPoints }}-{{totalPoints}} ],
                             backgroundColor: [
                                 'rgba(5, 151, 5, 0.7)',
                                 'rgba(210, 216, 210, 0.2)'
