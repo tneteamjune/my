@@ -1,72 +1,62 @@
 {% extends 'layouts/default.html' %}
 {% load pybo_filter %}
 {% block content %}
+
 <div class="container my-3">
-  <a class="text-center">
-    <h5>나의 제안하기</h5></a>
-    <div class="text-right">
-        </div>
-    <div class="row justify-content-between my-3">
-        <div class="col-2">
-        </div>
-    </div>
-    <td><button type="submit" class="btn btn-primary">채택대기</button></td>
-    제안이 접수되었고, 채택을 기다리고 있어요.<p><p>
-    <td><button type="submit" class="btn btn-success">점수받기</button></td>
-    제안이 채택되었어요! 버튼을 눌러서 초록점수를 받아주세요.<p>
-    <td><button type="submit" class="btn btn-secondary">채택완료</button></td>
-    채택 및 초록점수 받기까지 완료된 제안이에요.<p>
-    <p>
-    <table class="table">
-        <thead>
-        <tr class="text-center thead-dark">
-            <th>번호</th>
-            <th>제목</th>
-            <th style="width:50%">내용</th>
-            <th>첨부</th>
-            <th>작성일시</th>
-            <th>채택</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% if contacts %}
-        {% for contact in contacts %}
-        <tr class="text-center">
-            <td class="text-left">{{ contact.id }}</td>
-            <td>{{ contact.subject }}</td>
-            <td>{{ contact.content }}</td>
-            {% if contact.imgs %}
-            <td><a href="{{contact.imgs.url}}"><img src="{{contact.imgs.url}}" height="50"></a></td>
-            {% else %}
-            <td>None</td>
-            {% endif %}
-            <td>{{ contact.create_date }}</td>
-            {% if contact.select == 0 %}
-            <td><button type="submit" class="btn btn-primary">채택대기</button></td>
-            {% elif contact.select == 1 %}
-            <td><form method="post" class="post-form" action="{% url 'common:contact_point' %}">
-                {% csrf_token %}
-                <input type="hidden" class="form-control" name="reason" id="reason"
-                value="{{ '제안 채택' |default_if_none:contact.id }}">
-                <input type="hidden" class="form-control" name="event" id="event"
-                value="{{ contact.id }}">
-                <button type="submit" class="btn btn-success">점수받기</button>
-            </form></td>
-            {% else %}
-            <td><button type="submit" class="btn btn-secondary">채택완료</button></td>
-            {% endif %}
+    <a class="text-center">
+        <h5>나의 제안하기</h5></a>
+        <img src="/static/image/contact.png" alt = "my_contact" style=" max-width: 500px; height:auto; margin: 0.2rem; ">
+
+        <table class="table">
+            <thead>
+            <tr class="text-center thead-dark">
+                <th>번호</th>
+                <th>제목</th>
+                <th>내용</th>
+                <th>첨부</th>
+                <th>작성일시</th>
+                <th>채택</th>
             </tr>
-        {% endfor %}
-        {% else %}
-        <tr>
-            <td colspan="3">아직 나의 제안이 없어요.
-                <p>소중한 의견을 기다리고 있습니다.
-                <p><a href = '/common/contact'>제안하기</a>에 참여해주세요.
-            </td>
-        </tr>
-        {% endif %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% if contacts %}
+                {% for contact in contacts %}
+                <tr class="text-center">
+                    <td class="text-left">{{ contact.id }}</td>
+                    <td >{{ contact.subject }}</td>
+                    <td>{{ contact.content }}</td>
+                    {% if contact.imgs %}
+                    <td><a href="{{contact.imgs.url}}"><img src="{{contact.imgs.url}}" height="50"></a></td>
+                    {% else %}
+                    <td>None</td>
+                    {% endif %}
+                    <td>{{ contact.create_date }}</td>
+                    {% if contact.select == 0 %}
+                    <td><button type="submit" class="btn btn-primary">채택대기</button></td>
+                    {% elif contact.select == 1 %}
+                    <td><form method="post" class="post-form" action="{% url 'common:contact_point' %}">
+                        {% csrf_token %}
+                        <input type="hidden" class="form-control" name="reason" id="reason"
+                        value="{{ '제안 채택' |default_if_none:contact.id }}">
+                        <input type="hidden" class="form-control" name="event" id="event"
+                        value="{{ contact.id }}">
+                        <button type="submit" class="btn btn-success">점수받기</button>
+                    </form></td>
+                    {% else %}
+                    <td><button type="submit" class="btn btn-secondary">채택완료</button></td>
+                    {% endif %}
+                    </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="3">아직 나의 제안이 없어요.
+                        <p>소중한 의견을 기다리고 있습니다.
+                        <p><a href = '/common/contact'>제안하기</a>에 참여해주세요.
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
 </div>
 
 <form id="searchForm" method="get" action="{% url 'index' %}">

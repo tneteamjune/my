@@ -20,14 +20,10 @@
   <!------ Include the above in your HEAD tag ---------->
 
   <!-- Footer -->
-  <nav class="navbar fixed-bottom navbar-dark navbar-expand-md bg-dark justify-content-center">
+  <nav class="navbar navbar-dark navbar-expand-md bg-dark justify-content-center">
   	<footer class="text-center footer">
       <div class="container noBot">
   			<div class="row">
-  				<div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-white footer-text">
-  					<p><a class="text-primary" href="{% url 'common:contact' %}">Any Suggestions?</a> 소중한 의견을 기다립니다.</p>
-  				</div>
-          <div class="row">
   					<ul class="list-unstyled list-inline social">
   						<li class="list-inline-item"><a href="https://www.instagram.com/trashtongtong"><i class="fa fa-facebook fa-2x"></i></a></li>
   						<li class="list-inline-item"><a href="https://www.instagram.com/trashtongtong"><i class="fa fa-twitter fa-2x"></i></a></li>
@@ -36,9 +32,11 @@
   						<li class="list-inline-item"><a href="mailto:_______@gmail.com" target="_blank"><i class="fa fa-envelope fa-2x"></i></a></li>
   					</ul>
   			</div>
-        <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-white footer-text">
-          <p class="h6">&copy 2021<a class="text-white ml-2" href="{% url 'common:admin' %}" style="text-decoration:none" target="_blank">ESG Warrior</a> All right Reserved.</p>
-        </div>
+  			<div class="row">
+  				<div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-white footer-text">
+  					<p><a class="text-primary" href="{% url 'common:contact' %}">Any Suggestions?</a> 소중한 의견을 기다립니다.</p>
+  					<p class="h6">&copy 2021<a class="text-white ml-2" href="{% url 'common:admin' %}" style="text-decoration:none" target="_blank">ESG Warrior</a> All right Reserved.</p>
+  				</div>
   			</div>
       </div>
   	</footer>
