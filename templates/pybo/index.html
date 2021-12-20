@@ -50,15 +50,15 @@
         
         var positions = []
         // 마커를 표시할 위치와 title 객체 배열입니다
-        {%for MapInfo in MapInfos %}
+        {% for MapInfo in MapInfos %}
         {% load tag_library %}
         var lat = {{MapInfo.lat|to_float}};
         var lng = {{MapInfo.lng|to_float}};
         positions.push({
                 number:`${{MapInfo.id}}`,
-                title:`${{MapInfo.title}}`,
+                title:`{{MapInfo.title}}`,
                 latlng: new kakao.maps.LatLng(lat,lng),
-                content:`${{MapInfo.content}}`,
+                content:`{{MapInfo.content}}`,
             }) 
         {%endfor%}
 
