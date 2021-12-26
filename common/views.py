@@ -332,20 +332,21 @@ def coupon(request):
         if point_form.is_valid():
             if user.profile.greenpoint < 100 :
                 messages.warning(request, '초록점수가 부족합니다.')
-                return redirect('common:mypage')
+                return redirect('common:coupon')
             else:
                 point = Point()
                 point.owner = request.user
                 point.date = timezone.now()
                 point.point = -100
-                point.reason = "초록쿠폰 교환"
+                point.reason = "에코쿠폰 교환"
                 point.event = "3.쿠폰교환"
                 point.save()
-                profile = Profile.objects.get(id=user)
+                profile = Profile.objects.get(id=user.id)
                 profile.coupon += 1
                 profile.save()
-                messages.info(request, '축하합니다. 초록쿠폰이 발행되었습니다!')
-                return redirect('common:mypage')
+                messages.info(request, '축하합니다. 에코쿠폰이 발행되었습니다!')
+                return redirect('common:coupon')
     else:
         point_form = PointForm()
-    return redirect('common:mypage')
+    context = {'form': point_form}
+    return render(request, 'common/point/coupon.html', context)

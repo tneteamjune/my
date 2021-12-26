@@ -4,7 +4,10 @@ register = template.Library()
 
 @register.filter
 def divide(A, B):
-    return round(A / B * 100, 2)
+    try:
+        return round(A / B * 100, 2)
+    except ZeroDivisionError:
+        return 0
 
 @register.filter
 def exists(A):
