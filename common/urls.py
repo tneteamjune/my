@@ -18,6 +18,7 @@ urlpatterns = [
     path('points_list/', views.points_list, name='points_list'),
     path('quiz/', views.quiz, name='quiz'),
     path('event/', views.event, name='event'),
+    path('coupon/', views.coupon, name='coupon'),
 
     #제안하기
     path('contact/', views.contact, name='contact'),

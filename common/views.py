@@ -91,7 +91,7 @@ def getStatus(v):
 
 # 마이페이지 (초록점수현황 포함)
 @login_required(login_url='common:login')
-def mypage(request):
+def mypage(request):        
     userid = request.user.id
     user = User.objects.get(id=userid)
 
@@ -323,3 +323,29 @@ def my_contact(request):
         }
     return render(request, 'common/my_contact.html', context)
 
+
+# 쿠폰발행
+def coupon(request):
+    user = request.user
+    if(request.method == 'POST'):
+        point_form = PointForm(request.POST)
+        if point_form.is_valid():
+            if user.profile.greenpoint < 100 :
+                messages.warning(request, '초록점수가 부족합니다.')
+                return redirect('common:mypage')
+            else:
+                point = Point()
+                point.owner = request.user
+                point.date = timezone.now()
+                point.point = -100
+                point.reason = "초록쿠폰 교환"
+                point.event = "3.쿠폰교환"
+                point.save()
+                profile = Profile.objects.get(id=user)
+                profile.coupon += 1
+                profile.save()
+                messages.info(request, '축하합니다. 초록쿠폰이 발행되었습니다!')
+                return redirect('common:mypage')
+    else:
+        point_form = PointForm()
+    return redirect('common:mypage')
