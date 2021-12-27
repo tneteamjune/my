@@ -1,6 +1,12 @@
 {% extends 'layouts/default.html' %}
 {% load pybo_filter %}
 {% block content %}
+<style>
+    .notice_title{
+        text-decoration:none;
+        color:black;
+    }
+</style>
 <div class="container my-3">
     <h5>공지사항</h5>
     <div class="row justify-content-between my-3">
@@ -31,8 +37,7 @@
                 {{ question_list.paginator.count|sub:question_list.start_index|sub:forloop.counter0|add:1 }}
             </td>
             <td class="text-left">
-                <a href="{% url 'pybo:detail' question.id %}">{{ question.subject }}</a>
-                {% if question.answer_set.count > 0 %}
+                <a class="notice_title" href="{% url 'pybo:detail' question.id %}">{{ question.subject }}</a>                {% if question.answer_set.count > 0 %}
                 <span class="text-danger small ml-2">{{ question.answer_set.count }}</span>
                 {% endif %}
             </td>
